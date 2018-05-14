@@ -1,0 +1,51 @@
+
+
+<html>
+<body>
+
+    {% for section in sections %}
+      <p>
+        <a href="{{ url_for('admin_section', section_id=section.sectionid) }}"
+        <button type="button">
+        {{ 'edit ' + section.name }}
+        </button>
+        </a>
+      </p>
+    {% endfor %}
+    <p>
+      <a href="{{ url_for('admin_section', section_id='new') }}"
+      <button type="button">
+      {{ 'create new section' }}
+      </button>
+      </a>
+    </p>
+
+
+    <form action="" method="post">
+        <p>
+            <label for="name">name</label>
+            <input type="text" name="name">
+        </p>
+        <p>
+            <label for="pass_percent">pass_percent</label>
+            <input type="text" name="pass_percent">
+        </p>
+        <p>
+            <label for="time_limit">time_limit</label>
+            <input type="text" name="time_limit">
+        </p>
+        <p>
+            <label for="expiration">expiration</label>
+            <input type="text" name="expiration">
+        </p>
+        <p>
+            <label for="ula">ula</label>
+            <input type="text" name="ula">
+        </p>
+        <p>
+            <input type="submit">
+        </p>
+    </form>
+
+</body>
+</html>

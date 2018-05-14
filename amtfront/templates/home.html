@@ -1,0 +1,19 @@
+
+<html>
+  <h1> Welcome {{ user.name }} </h1>
+
+
+  {% for exam in exams %}
+    <p>
+      <a href="{{ url_for('exam', exam_id=exam.examid) }}"
+      <button type="button">
+      {{ exam.name }}
+      </button>
+      </a>
+    </p>
+  {% endfor %}
+
+</html>
+
+
+{{ user.amt_name }}

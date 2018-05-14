@@ -1,0 +1,22 @@
+
+<html>
+
+
+  {% for exam in exams %}
+    <p>
+      <a href="{{ url_for('admin_exam', exam_id=exam.examid) }}"
+      <button type="button">
+      {{ 'edit ' + exam.name + '\n'}}
+      </button>
+      </a>
+    </p>
+  {% endfor %}
+    <p>
+      <a href="{{ url_for('admin_exam', exam_id='new') }}"
+      <button type="button">
+      {{ 'create new exam' }}
+      </button>
+      </a>
+    </p>
+
+</html>

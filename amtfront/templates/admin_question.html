@@ -1,0 +1,37 @@
+<html>
+<body>
+
+    {% for answer in question.answers %}
+      <p>
+      <a href="{{ url_for('admin_answer', answer_id=answer.answerid) }}"
+      <button type="button">
+      {{ 'edit ' + answer.answerid|string}}
+      </button>
+      </a>
+      </p>
+    {% endfor %}
+    <p>
+      <a href="{{ url_for('admin_answer', answer_id='new') }}"
+      <button type="button">
+      {{ 'create new answer' }}
+      </button>
+      </a>
+    </p>
+
+
+    <form action="" method="post">
+        <p>
+            <label for="question">question</label>
+            <input type="text" name="question">
+        </p>
+        <p>
+            <label for="section_id">section_id</label>
+            <input type="text" name="section_id">
+        </p>
+        <p>
+            <input type="submit">
+        </p>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<html>
+
+  <form action="" method="post">
+
+  {% for question in exam.questions %}
+    <p>
+      <h5> {{ question.question }} </h5>
+      {% for answer in question.answers %}
+        <input type = "radio" name = "{{ question.questionid }}" value = "{{ answer.answerid }}">  {{ answer.answer }}<br><br>
+      {% endfor %}
+      </a>
+    </p>
+  {% endfor %}
+  <input type="text" value="{{ exam }}" name="exam">
+  <p>
+    <input type="submit">
+  </p>
+
+  </form>
+
+
+</html>
