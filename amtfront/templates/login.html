@@ -75,34 +75,7 @@
            window.location.href = 'home';
       }
 
-      function buildFeed(feed){
-        let output = '<h3>Latest Posts</h3>';
-        for(let i in feed.data){
-          if(feed.data[i].message){
-            output += `
-              <div class="well">
-                ${feed.data[i].message} <span>${feed.data[i].created_time}</span>
-              </div>
-            `;
-          }
-        }
-        document.getElementById('feed').innerHTML = output;
-      }
-      function setElements(isLoggedIn){
-        if(isLoggedIn){
-          document.getElementById('logout').style.display = 'block';
-          document.getElementById('profile').style.display = 'block';
-          document.getElementById('feed').style.display = 'block';
-          document.getElementById('fb-btn').style.display = 'none';
-          document.getElementById('heading').style.display = 'none';
-        } else {
-          document.getElementById('logout').style.display = 'none';
-          document.getElementById('profile').style.display = 'none';
-          document.getElementById('feed').style.display = 'none';
-          document.getElementById('fb-btn').style.display = 'block';
-          document.getElementById('heading').style.display = 'block';
-        }
-      }
+
       function logout(){
         FB.logout(function(response){
           setElements(false);
