@@ -1,0 +1,20 @@
+- show user certificates on home screen
+- add timer functionality to test
+- add exam_complete view
+- look into adding a more comprehensive user session (less API queries)
+- remove hacky form pass of exam to certificate route
+- add delete in admin view
+- abstract parent class for admin (ex: question to exam_id decided)
+- add question+answer simultaneous input for admin
+- add admin put with questions input automatically
+- edit HTML in templates for more appealing home, exam, and admin pages
+  (add tables, lists, etc)
+- move API requests to helper class in utils
+- figure out cross-domain-requests for Facebook login api (could be quick)
+- add admin security and checking
+- abstract url for amttest API
+- add error route templating
+- add handling for bad input
+- lint / bug check
+- create install and init
+- add bootstrapping themes
