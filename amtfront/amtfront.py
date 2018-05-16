@@ -8,9 +8,9 @@ app = Flask(__name__)
 def login():
     return render_template('login.html')
 
-@app.route('/home/', methods=['get'])
-def home():
-    url = ('http://localhost:5000/amttest/api/user/1')
+@app.route('/home/<userid>', methods=['get'])
+def home(userid):
+    url = ('http://localhost:5000/amttest/api/user/' + userid)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
     response = requests.get(url, headers=headers)
     user = json.loads(response.text)
@@ -19,7 +19,13 @@ def home():
     response = requests.get(url, headers=headers)
     exams = json.loads(response.text)
 
-    return render_template('home.html', user=user, exams=exams)
+    url = ('http://localhost:5000/amttest/api/certificate/user/' + userid)
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+    response = requests.get(url, headers=headers)
+    certs = json.loads(response.text)
+
+
+    return render_template('home.html', user=user, exams=exams, certs=certs)
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
@@ -176,11 +182,11 @@ def handle_data():
         print(payload, file=sys.stderr)
         userid = payload["fbuserid"]
 
-
         url = ('http://localhost:5000/amttest/api/user')
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         r = requests.post(url, data=json.dumps(payload), headers=headers)
-        return redirect(url_for('home'))
+        response = json.loads(r.text)
+        return json.dumps(response)
 
 if __name__=='__main__':
     app.config['token'] = sys.argv[1]

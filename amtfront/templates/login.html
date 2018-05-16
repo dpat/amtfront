@@ -68,12 +68,11 @@
            var uid = user.id;
            var data1 = JSON.stringify({"fbuserid":uid, "name":name, "email":email});
            xhr.send(data1);
-          // xhr.onload = function() {
-        //    var amtuser = JSON.parse(this.responseText);
-        //  }
-          // console.log(amtuser)
-           window.location.href = 'home';
-      }
+           xhr.onload = function() {
+             var amtuser = JSON.parse(this.responseText)
+             window.location.href = 'home/' + amtuser.userid;
+           }
+       }
 
 
       function logout(){
@@ -102,7 +101,7 @@
             <li><a id="logout" href="#" onclick="logout()">Logout</a></li>
             <fb:login-button
               id="fb-btn"
-              scope="public_profile,email,user_birthday"
+              scope="public_profile,email"
               onlogin="checkLoginState();">
             </fb:login-button>
           </ul>
