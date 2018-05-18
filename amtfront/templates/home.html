@@ -2,16 +2,27 @@
 <html>
   <h1> Welcome {{ user.name }} </h1>
 
-
+  <h3> Select An Exam </h3>
+  <ul>
   {% for exam in exams %}
+    <li>
     <p>
-      <a href="{{ url_for('exam', exam_id=exam.examid) }}"
+      <a href="{{ url_for('exam', exam_id=exam.examid, user_id=user.userid) }}"
       <button type="button">
       {{ exam.name }}
       </button>
       </a>
     </p>
+  </li>
   {% endfor %}
+</ul>
+
+  {% for cert in certs %}
+    <p>
+      Exam {{cert.examid}}  passed:  {{ cert.passed }}
+    </p>
+  {% endfor %}
+
 
 </html>
 
