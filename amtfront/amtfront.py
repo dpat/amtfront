@@ -29,7 +29,10 @@ def home(userid):
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
-    url = ('http://localhost:5000/amttest/api/certificate/1/' + exam_id)
+
+    user_id = request.args.get('user_id')
+
+    url = ('http://localhost:5000/amttest/api/certificate/' + user_id + '/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
     if request.method == 'POST':
@@ -54,7 +57,7 @@ def exam(exam_id):
         response = requests.get(url, headers=headers)
         exam = json.loads(response.text)
 
-        return render_template('exam.html', exam=exam)
+        return render_template('exam.html', exam=exam, user_id=user_id)
 
 @app.route('/admin')
 def admin():
