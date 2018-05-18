@@ -5,7 +5,7 @@ purposes
 
 See TODO for list of tasks
 
-Running this API
+Running this Flask app
 - pull repo
 - install and run amttest api (see https://github.com/asbalderson/amttest/)
 - run amtfront with token value (ex: python3 amtfront.py 12341255) if token value=12341255
