@@ -1,7 +1,5 @@
-- show user certificates on home screen
-- add timer functionality to test
+- pass user session + add session functionality/mild route protections
 - add exam_complete view
-- look into adding a more comprehensive user session (less API queries)
 - remove hacky form pass of exam to certificate route
 - add delete in admin view
 - abstract parent class for admin (ex: question to exam_id decided)
