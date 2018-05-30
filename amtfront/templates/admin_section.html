@@ -3,7 +3,7 @@
 
     {% for question in section.questions %}
       <p>
-      <a href="{{ url_for('admin_question', question_id=question.questionid) }}"
+      <a href="{{ url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id=question.questionid) }}"
       <button type="button">
       {{ 'edit ' + question.questionid|string}}
       </button>
@@ -11,7 +11,7 @@
       </p>
     {% endfor %}
     <p>
-      <a href="{{ url_for('admin_question', question_id='new') }}"
+      <a href="{{ url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id='new') }}"
       <button type="button">
       {{ 'create new question' }}
       </button>
@@ -41,5 +41,19 @@
         </p>
     </form>
 
+    <form id="delete" action="" method="post">
+      <p>
+        <button onclick="Delete()">Delete this section</button>
+        <input id="delete1" name="delete" type="hidden" value="default">
+      </p>
+    </form>
+
 </body>
 </html>
+
+<script>
+  function Delete() {
+      document.getElementById("delete1").value = 'delete';
+      document.getElementById("delete").submit();
+  }
+</script>

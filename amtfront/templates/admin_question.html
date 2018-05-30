@@ -3,7 +3,7 @@
 
     {% for answer in question.answers %}
       <p>
-      <a href="{{ url_for('admin_answer', answer_id=answer.answerid) }}"
+      <a href="{{ url_for('admin_answer', exam_id=exam_id, section_id=section_id, question_id=question_id, answer_id=answer.answerid) }}"
       <button type="button">
       {{ 'edit ' + answer.answerid|string}}
       </button>
@@ -11,7 +11,7 @@
       </p>
     {% endfor %}
     <p>
-      <a href="{{ url_for('admin_answer', answer_id='new') }}"
+      <a href="{{ url_for('admin_answer', exam_id=exam_id, section_id=section_id, question_id=question_id, answer_id='new') }}"
       <button type="button">
       {{ 'create new answer' }}
       </button>
@@ -25,13 +25,47 @@
             <input type="text" name="question">
         </p>
         <p>
-            <label for="section_id">section_id</label>
-            <input type="text" name="section_id">
+            <label for="answer1">answer</label>
+            <input type="text" name="answer1">
+            <label for="correct1">correct</label>
+            <input type="text" name="correct1">
+        </p>
+        <p>
+            <label for="answer2">answer</label>
+            <input type="text" name="answer2">
+            <label for="correct2">correct</label>
+            <input type="text" name="correct2">
+        </p>
+        <p>
+            <label for="answer3">answer</label>
+            <input type="text" name="answer3">
+            <label for="correct3">correct</label>
+            <input type="text" name="correct3">
+        </p>
+        <p>
+            <label for="answer4">answer</label>
+            <input type="text" name="answer4">
+            <label for="correct4">correct</label>
+            <input type="text" name="correct4">
         </p>
         <p>
             <input type="submit">
         </p>
     </form>
 
+    <form id="delete" action="" method="post">
+      <p>
+        <button onclick="Delete()">Delete this question</button>
+        <input id="delete1" name="delete" type="hidden" value="default">
+      </p>
+    </form>
+
 </body>
 </html>
+
+<script>
+function Delete() {
+    document.getElementById("delete1").value = 'delete';
+    document.getElementById("delete").submit();
+}
+</script>

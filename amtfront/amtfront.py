@@ -49,7 +49,7 @@ def exam(exam_id):
 
         print(payload, file=sys.stderr)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
-        return redirect(url_for('home'))
+        return redirect(url_for('home', userid=user_id))
 
     else:
         url = ('http://localhost:5000/amttest/api/exam/' + exam_id + '/take')
@@ -68,10 +68,9 @@ def admin():
 
     return render_template('admin.html', exams=exams)
 
-@app.route('/admin/exam/<exam_id>', methods=['post','get'])
+@app.route('/admin/exam/<exam_id>', methods=['delete','post','get'])
 def admin_exam(exam_id):
 
-    print(app.config.get('token'), file=sys.stderr)
     url = ('http://localhost:5000/amttest/api/exam')
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
@@ -86,7 +85,12 @@ def admin_exam(exam_id):
 
             payload = {'name':name, 'pass_percent':int(pass_percent), 'time_limit':int(time_limit), 'expiration':int(expiration), 'ula':ula}
             r = requests.post(url, data=json.dumps(payload), headers=headers)
-            return redirect(url_for('admin'))
+
+        elif request.form.get('delete') == 'delete':
+            url = ('http://localhost:5000/amttest/api/exam/' + exam_id)
+            r = requests.delete(url, headers=headers)
+
+        return redirect(url_for('admin'))
 
     else:
         if exam_id == 'new':
@@ -97,16 +101,18 @@ def admin_exam(exam_id):
             response = requests.get(url, headers=headers)
             sections = json.loads(response.text)
 
-        return render_template('admin_exam.html', sections=sections)
+        return render_template('admin_exam.html', sections=sections, exam_id=exam_id)
 
-@app.route('/admin/section/<section_id>', methods=['post','get'])
-def admin_section(section_id):
+@app.route('/admin/section/<exam_id>/<section_id>', methods=['delete','post','get'])
+def admin_section(exam_id, section_id):
+
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
     if request.method == 'POST':
         if section_id == 'new':
             #post new test
             name = request.form.get('name')
-            exam_id = request.form.get('exam_id')
+            #exam_id = request.form.get('exam_id')
             active_questions = request.form.get('active_questions')
             archive = request.form.get('archive')
 
@@ -114,8 +120,11 @@ def admin_section(section_id):
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
             payload = {'name':name, 'exam_id':int(exam_id), 'active_questions':int(active_questions), 'archive':bool(archive)}
             r = requests.post(url, data=json.dumps(payload), headers=headers)
-            return redirect(url_for('admin_exam', exam_id=exam_id))
 
+        elif request.form.get('delete') == 'delete':
+            url = ('http://localhost:5000/amttest/api/section/' + section_id)
+            r = requests.delete(url, headers=headers)
+        return redirect(url_for('admin_exam', exam_id=exam_id))
 
     else:
 
@@ -124,23 +133,42 @@ def admin_section(section_id):
         response = requests.get(url, headers=headers)
         section = json.loads(response.text)
 
-        return render_template('admin_section.html', section=section)
+        return render_template('admin_section.html', exam_id=exam_id, section_id=section_id, section=section)
 
-@app.route('/admin/question/<question_id>', methods=['post','get'])
-def admin_question(question_id):
+@app.route('/admin/question/<exam_id>/<section_id>/<question_id>', methods=['delete','post','get'])
+def admin_question(exam_id, section_id, question_id):
+
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
     if request.method == 'POST':
         if question_id == 'new':
             #post new test
             question = request.form.get('question')
-            section_id = request.form.get('section_id')
+            ##section_id = request.form.get('section_id')
 
             url = ('http://localhost:5000/amttest/api/section/' + section_id + '/question')
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
             payload = {'question':question, 'section_id':int(section_id)}
             r = requests.post(url, data=json.dumps(payload), headers=headers)
-            return redirect(url_for('admin_section', section_id=section_id))
+            response = json.loads(r.text)
+            question_id = response['questionid']
 
+            for i in range(0, 4):
+                answer = request.form.get('answer' + str(i))
+                correct = request.form.get('correct' + str(i))
+                if answer and correct:
+                    url = ('http://localhost:5000/amttest/api/question/' + str(question_id) + '/answer')
+                    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+                    payload = {'answer':answer, 'question_id':int(question_id), 'correct':bool(correct)}
+                    print(answer, file=sys.stderr)
+                    r = requests.post(url, data=json.dumps(payload), headers=headers)
+
+
+        elif request.form.get('delete') == 'delete':
+            url = ('http://localhost:5000/amttest/api/question/' + question_id)
+            r = requests.delete(url, headers=headers)
+
+        return redirect(url_for('admin_section', exam_id=exam_id, section_id=section_id))
 
     else:
         url = ('http://localhost:5000/amttest/api/question/' + question_id)
@@ -148,16 +176,17 @@ def admin_question(question_id):
         response = requests.get(url, headers=headers)
         question = json.loads(response.text)
 
-        return render_template('admin_question.html', question=question)
+        return render_template('admin_question.html', exam_id=exam_id, section_id=section_id, question_id=question_id, question=question)
 
-@app.route('/admin/answer/<answer_id>', methods=['post','get'])
-def admin_answer(answer_id):
+@app.route('/admin/answer/<exam_id>/<section_id>/<question_id>/<answer_id>', methods=['delete','post','get'])
+def admin_answer(exam_id, section_id, question_id, answer_id):
+
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
     if request.method == 'POST':
         if answer_id == 'new':
             #post new test
             answer = request.form.get('answer')
-            question_id = request.form.get('question_id')
             correct = request.form.get('correct')
 
 
@@ -165,7 +194,13 @@ def admin_answer(answer_id):
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
             payload = {'answer':answer, 'question_id':int(question_id), 'correct':bool(correct)}
             r = requests.post(url, data=json.dumps(payload), headers=headers)
-            return redirect(url_for('admin_question', question_id=question_id))
+            return redirect(url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id=question_id))
+
+        elif request.form.get('delete') == 'delete':
+            url = ('http://localhost:5000/amttest/api/answer/' + answer_id)
+            r = requests.delete(url, headers=headers)
+
+        return redirect(url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id=question_id))
 
     else:
         url = ('http://localhost:5000/amttest/api/answer/' + answer_id)

@@ -20,5 +20,19 @@
         </p>
     </form>
 
+    <form id="delete" action="" method="post">
+      <p>
+        <button onclick="Delete()">Delete this answer</button>
+        <input id="delete1" name="delete" type="hidden" value="default">
+      </p>
+    </form>
+
 </body>
 </html>
+
+<script>
+  function Delete() {
+      document.getElementById("delete1").value = 'delete';
+      document.getElementById("delete").submit();
+  }
+</script>
