@@ -12,6 +12,8 @@
         </a>
       </p>
     {% endfor %}
+
+    {% if not exam=={} %}
     <p>
       <a href="{{ url_for('admin_section', exam_id=exam_id, section_id='new') }}"
       <button type="button">
@@ -19,6 +21,7 @@
       </button>
       </a>
     </p>
+    {% endif %}
 
 
     <form action="" method="post">
