@@ -69,8 +69,8 @@
            var data1 = JSON.stringify({"fbuserid":uid, "name":name, "email":email});
            xhr.send(data1);
            xhr.onload = function() {
-             var amtuser = JSON.parse(this.responseText)
-             window.location.href = 'home/' + amtuser.userid;
+            // var amtuser = JSON.parse(this.responseText)
+             window.location.href = 'home';
            }
        }
 

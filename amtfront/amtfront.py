@@ -1,15 +1,22 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from OpenSSL import SSL
-import requests, json, flask, sys, ast, click
+import requests, json, flask, sys, ast, click, os
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 @app.route('/')
 def login():
     return render_template('login.html')
 
-@app.route('/home/<userid>', methods=['get'])
-def home(userid):
+@app.route('/home', methods=['get'])
+def home():
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return 'Not Logged In'
+
     url = ('http://localhost:5000/amttest/api/user/' + userid)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
     response = requests.get(url, headers=headers)
@@ -30,9 +37,12 @@ def home(userid):
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
 
-    user_id = request.args.get('user_id')
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return 'Not Logged In'
 
-    url = ('http://localhost:5000/amttest/api/certificate/' + user_id + '/' + exam_id)
+    url = ('http://localhost:5000/amttest/api/certificate/' + userid + '/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
     if request.method == 'POST':
@@ -49,7 +59,7 @@ def exam(exam_id):
 
         print(payload, file=sys.stderr)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
-        return redirect(url_for('home', userid=user_id))
+        return redirect(url_for('home', userid=userid))
 
     else:
         url = ('http://localhost:5000/amttest/api/exam/' + exam_id + '/take')
@@ -57,10 +67,16 @@ def exam(exam_id):
         response = requests.get(url, headers=headers)
         exam = json.loads(response.text)
 
-        return render_template('exam.html', exam=exam, user_id=user_id)
+        return render_template('exam.html', exam=exam, user_id=userid)
 
 @app.route('/admin')
 def admin():
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return 'Not Logged In'
+
     url = ('http://localhost:5000/amttest/api/exam')
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
     response = requests.get(url, headers=headers)
@@ -70,6 +86,11 @@ def admin():
 
 @app.route('/admin/exam/<exam_id>', methods=['delete','post','get'])
 def admin_exam(exam_id):
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return 'Not Logged In'
 
     url = ('http://localhost:5000/amttest/api/exam')
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -106,6 +127,11 @@ def admin_exam(exam_id):
 @app.route('/admin/section/<exam_id>/<section_id>', methods=['delete','post','get'])
 def admin_section(exam_id, section_id):
 
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return 'Not Logged In'
+
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
     if request.method == 'POST':
@@ -137,6 +163,11 @@ def admin_section(exam_id, section_id):
 
 @app.route('/admin/question/<exam_id>/<section_id>/<question_id>', methods=['delete','post','get'])
 def admin_question(exam_id, section_id, question_id):
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return 'Not Logged In'
 
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
@@ -181,6 +212,11 @@ def admin_question(exam_id, section_id, question_id):
 @app.route('/admin/answer/<exam_id>/<section_id>/<question_id>/<answer_id>', methods=['delete','post','get'])
 def admin_answer(exam_id, section_id, question_id, answer_id):
 
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return 'Not Logged In'
+
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
     if request.method == 'POST':
@@ -224,7 +260,9 @@ def handle_data():
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         response = json.loads(r.text)
+        session['userid'] = response["userid"]
         return json.dumps(response)
+
 
 if __name__=='__main__':
     app.config['token'] = sys.argv[1]
