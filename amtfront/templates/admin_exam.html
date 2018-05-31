@@ -24,23 +24,23 @@
     <form action="" method="post">
         <p>
             <label for="name">name</label>
-            <input type="text" name="name">
+            <input type="text" name="name" value="{{ exam.name }}">
         </p>
         <p>
             <label for="pass_percent">pass_percent</label>
-            <input type="text" name="pass_percent">
+            <input type="text" name="pass_percent" value="{{ exam.pass_percent }}">
         </p>
         <p>
             <label for="time_limit">time_limit</label>
-            <input type="text" name="time_limit">
+            <input type="text" name="time_limit" value="{{ exam.time_limit }}">
         </p>
         <p>
             <label for="expiration">expiration</label>
-            <input type="text" name="expiration">
+            <input type="text" name="expiration" value="{{ exam.expiration }}">
         </p>
         <p>
             <label for="ula">ula</label>
-            <input type="text" name="ula">
+            <input type="text" name="ula" value="{{ exam.ula }}">
         </p>
         <p>
             <input type="submit">

@@ -22,19 +22,11 @@
     <form action="" method="post">
         <p>
             <label for="name">name</label>
-            <input type="text" name="name">
-        </p>
-        <p>
-            <label for="exam_id">exam_id</label>
-            <input type="text" name="exam_id">
+            <input type="text" name="name" value="{{ section.name }}">
         </p>
         <p>
             <label for="active_questions">active_questions</label>
-            <input type="text" name="active_questions">
-        </p>
-        <p>
-            <label for="archive">archive</label>
-            <input type="text" name="archive">
+            <input type="text" name="active_questions" value="{{ section.active_questions }}">
         </p>
         <p>
             <input type="submit">
