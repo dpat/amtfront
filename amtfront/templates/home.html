@@ -28,10 +28,10 @@
   {% endfor %}
 </ul>
 
-  {% for cert in certs %}
+  {% for cert in certs.keys() %}
 
     <p>
-      Exam {{cert.examid}}  passed:  {{ cert.passed }}
+      Exam {{cert}}  passed:  on {{ certs[cert] }}
     </p>
   {% endfor %}
 
