@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from OpenSSL import SSL
+from datetime import datetime
 import requests, json, flask, sys, ast, click, os
 
 app = Flask(__name__)
@@ -16,7 +17,7 @@ def home():
         userid = str(session['userid'])
     else:
         return redirect(url_for('login'))
-    
+
     admin = False
     if session['admin']:
         admin = True
@@ -35,8 +36,17 @@ def home():
     response = requests.get(url, headers=headers)
     certs = json.loads(response.text)
 
+    certdict = {}
+    for cert in certs:
+        if cert['examid'] in certdict and cert['passed']:
+            if cert['testdate'] > certdict[cert['examid']]:
+                certdict[cert['examid']] = cert['testdate']
+        elif cert['examid'] not in certdict and cert['passed']:
+            certdict[cert['examid']] = cert['testdate']
 
-    return render_template('home.html', admin=admin, user=user, exams=exams, certs=certs)
+    print(certdict, file=sys.stderr)
+
+    return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
@@ -53,7 +63,6 @@ def exam(exam_id):
         payload = []
         exam = request.form.get('exam')
         exam = ast.literal_eval(exam)
-        print(exam, file=sys.stderr)
 
         for question in exam["questions"]:
             #post new test
@@ -137,7 +146,8 @@ def admin_exam(exam_id):
     else:
         if exam_id == 'new':
             sections = []
-            return render_template('admin_exam.html', sections=sections, exam_id=exam_id)
+            exam = {}
+            return render_template('admin_exam.html', sections=sections, exam_id=exam_id, exam=exam)
 
         else:
             url = ('http://localhost:5000/amttest/api/exam/' + exam_id + '/section')
@@ -190,10 +200,13 @@ def admin_section(exam_id, section_id):
 
     else:
 
-        url = ('http://localhost:5000/amttest/api/section/' + section_id)
-        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
-        response = requests.get(url, headers=headers)
-        section = json.loads(response.text)
+        if section_id=='new':
+            section = {}
+        else:
+            url = ('http://localhost:5000/amttest/api/section/' + section_id)
+            headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+            response = requests.get(url, headers=headers)
+            section = json.loads(response.text)
 
         return render_template('admin_section.html', exam_id=exam_id, section_id=section_id, section=section)
 
@@ -240,10 +253,14 @@ def admin_question(exam_id, section_id, question_id):
         return redirect(url_for('admin_section', exam_id=exam_id, section_id=section_id))
 
     else:
-        url = ('http://localhost:5000/amttest/api/question/' + question_id)
-        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
-        response = requests.get(url, headers=headers)
-        question = json.loads(response.text)
+
+        if question_id=='new':
+            question = {}
+        else:
+            url = ('http://localhost:5000/amttest/api/question/' + question_id)
+            headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+            response = requests.get(url, headers=headers)
+            question = json.loads(response.text)
 
         return render_template('admin_question.html', exam_id=exam_id, section_id=section_id, question_id=question_id, question=question)
 
