@@ -1,6 +1,17 @@
-
 <html>
-  <h1> Welcome {{ user.name }} </h1>
+
+  {% if not admin %}
+    <h1> Welcome {{ user.name }} </h1>
+  {% endif %}
+
+  {% if admin %}
+    <h1> Welcome Admin {{ user.name }} </h1>
+    <a href="{{ url_for('admin') }}"
+    <button type="button">
+    View Admin Pages
+    </button>
+    </a>
+  {% endif %}
 
   <h3> Select An Exam </h3>
   <ul>
@@ -18,6 +29,7 @@
 </ul>
 
   {% for cert in certs %}
+
     <p>
       Exam {{cert.examid}}  passed:  {{ cert.passed }}
     </p>
@@ -25,6 +37,3 @@
 
 
 </html>
-
-
-{{ user.amt_name }}

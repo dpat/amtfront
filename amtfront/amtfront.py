@@ -15,7 +15,11 @@ def home():
     if 'userid' in session:
         userid = str(session['userid'])
     else:
-        return 'Not Logged In'
+        return redirect(url_for('login'))
+    
+    admin = False
+    if session['admin']:
+        admin = True
 
     url = ('http://localhost:5000/amttest/api/user/' + userid)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -32,7 +36,7 @@ def home():
     certs = json.loads(response.text)
 
 
-    return render_template('home.html', user=user, exams=exams, certs=certs)
+    return render_template('home.html', admin=admin, user=user, exams=exams, certs=certs)
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
@@ -40,7 +44,7 @@ def exam(exam_id):
     if 'userid' in session:
         userid = str(session['userid'])
     else:
-        return 'Not Logged In'
+        return redirect(url_for('login'))
 
     url = ('http://localhost:5000/amttest/api/certificate/' + userid + '/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -75,7 +79,10 @@ def admin():
     if 'userid' in session:
         userid = str(session['userid'])
     else:
-        return 'Not Logged In'
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
 
     url = ('http://localhost:5000/amttest/api/exam')
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -90,7 +97,10 @@ def admin_exam(exam_id):
     if 'userid' in session:
         userid = str(session['userid'])
     else:
-        return 'Not Logged In'
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
 
     url = ('http://localhost:5000/amttest/api/exam')
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -111,18 +121,34 @@ def admin_exam(exam_id):
             url = ('http://localhost:5000/amttest/api/exam/' + exam_id)
             r = requests.delete(url, headers=headers)
 
+        else:
+            name = request.form.get('name')
+            pass_percent = request.form.get('pass_percent')
+            time_limit = request.form.get('time_limit')
+            expiration = request.form.get('expiration')
+            ula = request.form.get('ula')
+
+            url = ('http://localhost:5000/amttest/api/exam/' + exam_id)
+            payload = {'name':name, 'pass_percent':int(pass_percent), 'time_limit':int(time_limit), 'expiration':int(expiration), 'ula':ula}
+            r = requests.put(url, data=json.dumps(payload), headers=headers)
+
         return redirect(url_for('admin'))
 
     else:
         if exam_id == 'new':
             sections = []
+            return render_template('admin_exam.html', sections=sections, exam_id=exam_id)
+
         else:
             url = ('http://localhost:5000/amttest/api/exam/' + exam_id + '/section')
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
             response = requests.get(url, headers=headers)
             sections = json.loads(response.text)
+            url = ('http://localhost:5000/amttest/api/exam/' + exam_id)
+            response = requests.get(url, headers=headers)
+            exam = json.loads(response.text)
 
-        return render_template('admin_exam.html', sections=sections, exam_id=exam_id)
+            return render_template('admin_exam.html', sections=sections, exam_id=exam_id, exam=exam)
 
 @app.route('/admin/section/<exam_id>/<section_id>', methods=['delete','post','get'])
 def admin_section(exam_id, section_id):
@@ -130,7 +156,10 @@ def admin_section(exam_id, section_id):
     if 'userid' in session:
         userid = str(session['userid'])
     else:
-        return 'Not Logged In'
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
 
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
@@ -138,18 +167,25 @@ def admin_section(exam_id, section_id):
         if section_id == 'new':
             #post new test
             name = request.form.get('name')
-            #exam_id = request.form.get('exam_id')
             active_questions = request.form.get('active_questions')
-            archive = request.form.get('archive')
 
             url = ('http://localhost:5000/amttest/api/exam/' + exam_id + '/section')
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
-            payload = {'name':name, 'exam_id':int(exam_id), 'active_questions':int(active_questions), 'archive':bool(archive)}
+            payload = {'name':name, 'exam_id':int(exam_id), 'active_questions':int(active_questions)}
             r = requests.post(url, data=json.dumps(payload), headers=headers)
 
         elif request.form.get('delete') == 'delete':
             url = ('http://localhost:5000/amttest/api/section/' + section_id)
             r = requests.delete(url, headers=headers)
+        else:
+            name = request.form.get('name')
+            active_questions = request.form.get('active_questions')
+
+            url = ('http://localhost:5000/amttest/api/section/' + section_id)
+            headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+            payload = {'name':name, 'exam_id':int(exam_id), 'active_questions':int(active_questions)}
+            r = requests.put(url, data=json.dumps(payload), headers=headers)
+
         return redirect(url_for('admin_exam', exam_id=exam_id))
 
     else:
@@ -167,7 +203,10 @@ def admin_question(exam_id, section_id, question_id):
     if 'userid' in session:
         userid = str(session['userid'])
     else:
-        return 'Not Logged In'
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
 
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
@@ -175,7 +214,6 @@ def admin_question(exam_id, section_id, question_id):
         if question_id == 'new':
             #post new test
             question = request.form.get('question')
-            ##section_id = request.form.get('section_id')
 
             url = ('http://localhost:5000/amttest/api/section/' + section_id + '/question')
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -190,14 +228,14 @@ def admin_question(exam_id, section_id, question_id):
                 if answer and correct:
                     url = ('http://localhost:5000/amttest/api/question/' + str(question_id) + '/answer')
                     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
-                    payload = {'answer':answer, 'question_id':int(question_id), 'correct':bool(correct)}
-                    print(answer, file=sys.stderr)
+                    payload = {'answer':answer, 'question_id':int(question_id), 'correct':json.loads(correct)}
                     r = requests.post(url, data=json.dumps(payload), headers=headers)
 
 
         elif request.form.get('delete') == 'delete':
             url = ('http://localhost:5000/amttest/api/question/' + question_id)
             r = requests.delete(url, headers=headers)
+
 
         return redirect(url_for('admin_section', exam_id=exam_id, section_id=section_id))
 
@@ -215,7 +253,10 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
     if 'userid' in session:
         userid = str(session['userid'])
     else:
-        return 'Not Logged In'
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
 
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
 
@@ -228,7 +269,7 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
 
             url = ('http://localhost:5000/amttest/api/question/' + question_id + '/answer')
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
-            payload = {'answer':answer, 'question_id':int(question_id), 'correct':bool(correct)}
+            payload = {'answer':answer, 'question_id':int(question_id), 'correct':json.loads(correct)}
             r = requests.post(url, data=json.dumps(payload), headers=headers)
             return redirect(url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id=question_id))
 
@@ -253,14 +294,13 @@ def handle_data():
 
     if request.method == 'POST':
         payload = request.get_json()
-        print(payload, file=sys.stderr)
-        userid = payload["fbuserid"]
 
         url = ('http://localhost:5000/amttest/api/user')
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         response = json.loads(r.text)
         session['userid'] = response["userid"]
+        session['admin'] = response["admin"]
         return json.dumps(response)
 
 
