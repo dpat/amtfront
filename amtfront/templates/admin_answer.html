@@ -5,23 +5,25 @@
     <form action="" method="post">
         <p>
             <label for="answer">answer</label>
-            <input type="text" name="answer">
+            <input type="text" name="answer" Value="{{ answer.answer }}">
         </p>
         <p>
             <label for="correct">correct</label>
-            <input type="text" name="correct">
+            <input type="text" name="correct" Value="{{ answer.correct }}">
         </p>
         <p>
             <input type="submit">
         </p>
     </form>
 
+    {% if not answer=={} %}
     <form id="delete" action="" method="post">
       <p>
         <button onclick="Delete()">Delete this answer</button>
         <input id="delete1" name="delete" type="hidden" value="default">
       </p>
     </form>
+    {% endif %}
 
     <p>
     <a href="{{ url_for('admin') }}"
@@ -44,7 +46,9 @@
 
 <script>
   function Delete() {
-      document.getElementById("delete1").value = 'delete';
-      document.getElementById("delete").submit();
+    if (confirm("Are you sure you want to delete this answer?")){
+    document.getElementById("delete1").value = 'delete';
+    document.getElementById("delete").submit();
+  }
   }
 </script>
