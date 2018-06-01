@@ -64,7 +64,9 @@
 
 <script>
   function Delete() {
-      document.getElementById("delete1").value = 'delete';
-      document.getElementById("delete").submit();
+    if (confirm("Are you sure you want to delete this section?")){
+    document.getElementById("delete1").value = 'delete';
+    document.getElementById("delete").submit();
+  }
   }
 </script>
