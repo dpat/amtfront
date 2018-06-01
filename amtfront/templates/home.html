@@ -31,7 +31,8 @@
   {% for cert in certs.keys() %}
 
     <p>
-      Exam {{cert}}  passed:  on {{ certs[cert] }}
+      Exam {{ cert }}  passed:  on {{ certs[cert]['testdate'] }}
+      with a score of {{ certs[cert]['correct'] }} out of {{ certs[cert]['possible'] }}
     </p>
   {% endfor %}
 
