@@ -27,7 +27,7 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     document.getElementById("demo").innerHTML = "EXPIRED";
-    window.location.href = '/home/' + {{ user_id|safe }}
+    window.location.href = '/home'
   }
 }, 1000);
 </script>
