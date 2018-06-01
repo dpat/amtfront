@@ -43,7 +43,7 @@
         </p>
         <p>
             <label for="ula">ula</label>
-            <input type="text" name="ula" value="{{ exam.ula }}">
+            <textarea type="text" name="ula" cols="40" rows="7"> {{ exam.ula }} </textarea>
         </p>
         <p>
             <input type="submit">
@@ -78,7 +78,9 @@
 
 <script>
 function Delete() {
+    if (confirm("Are you sure you want to delete this exam?")){
     document.getElementById("delete1").value = 'delete';
     document.getElementById("delete").submit();
+  }
 }
 </script>
