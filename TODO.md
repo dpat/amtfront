@@ -1,20 +1,11 @@
-- exam name with certs
 - edit admin pages to match discussed looks (list sections etc)
-- bigger ULA text input box
-- delete confirmation on admin pages
-- question autofill for put (answerid for form name)
 - navbar (home, user, admin, logout)
-- ULA page/conf. before test
 - Admin/User view on admin page
-- Remove fbuserid
-- grade test on timeout
 - Add token for secure connect between login and /handle_data
-- add exam_complete view
-- remove hacky form pass of exam to certificate route
+- timeout on failed facebook login
 - edit HTML in templates for more appealing home, exam, and admin pages
   (add tables, lists, etc)
 - move API requests to helper class in utils
-- abstract url for amttest API
 - add error route templating
 - add handling for bad input
 - lint / bug check
