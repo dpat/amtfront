@@ -1,15 +1,19 @@
-- pass user session + add session functionality/mild route protections
+- exam name with certs
+- edit admin pages to match discussed looks (list sections etc)
+- bigger ULA text input box
+- delete confirmation on admin pages
+- question autofill for put (answerid for form name)
+- navbar (home, user, admin, logout)
+- ULA page/conf. before test
+- Admin/User view on admin page
+- Remove fbuserid
+- grade test on timeout
+- Add token for secure connect between login and /handle_data
 - add exam_complete view
 - remove hacky form pass of exam to certificate route
-- add delete in admin view
-- abstract parent class for admin (ex: question to exam_id decided)
-- add question+answer simultaneous input for admin
-- add admin put with questions input automatically
 - edit HTML in templates for more appealing home, exam, and admin pages
   (add tables, lists, etc)
 - move API requests to helper class in utils
-- figure out cross-domain-requests for Facebook login api (could be quick)
-- add admin security and checking
 - abstract url for amttest API
 - add error route templating
 - add handling for bad input
