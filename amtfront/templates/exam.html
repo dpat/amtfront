@@ -1,4 +1,4 @@
-<p id="demo"></p>
+<p id="timer"></p>
 
 <script>
 // Set the date we're counting down to
@@ -20,14 +20,13 @@ var x = setInterval(function() {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
   // Display the result in the element with id="demo"
-  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  document.getElementById("timer").innerHTML = days + "d " + hours + "h "
   + minutes + "m " + seconds + "s ";
 
   // If the count down is finished, write some text
   if (distance < 0) {
     clearInterval(x);
-    document.getElementById("demo").innerHTML = "EXPIRED";
-    window.location.href = '/home'
+    document.getElementById("exam").submit();
   }
 }, 1000);
 </script>
@@ -35,18 +34,24 @@ var x = setInterval(function() {
 
 <html>
 
-  <form action="" method="post">
+  <form id="exam" action="" method="post">
 
   {% for question in exam.questions %}
     <p>
       <h5> {{ question.question }} </h5>
+      {% set count = 1 %}
       {% for answer in question.answers %}
-        <input type = "radio" name = "{{ question.questionid }}" value = "{{ answer.answerid }}">  {{ answer.answer }}<br><br>
+        {% if count==1 %}
+          <input type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}" checked="checked">
+            {{ answer.answer }}<br><br>
+        {% else %}
+          <input type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}">  {{ answer.answer }}<br><br>
+        {% endif %}
       {% endfor %}
       </a>
     </p>
   {% endfor %}
-  <input type="hidden" value="{{ exam }}" name="exam">
+
   <p>
     <input type="submit">
   </p>
