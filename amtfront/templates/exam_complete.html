@@ -1,0 +1,25 @@
+
+<html>
+
+{% if cert.passed %}
+<h1> Nice Work! You Passed. </h1>
+{% else %}
+<h1> Good Attempt! You Almost Had It! </h1>
+{% endif %}
+
+<p>
+You scored {{ "{0:.0f}%".format((cert.correct / cert.possible) * 100) }}
+<br>
+With a total of {{ cert.correct }} out of {{ cert.possible }} correct answers
+</br>
+</p>
+
+<p>
+<a href="{{ url_for('home') }}"
+<button type="button">
+Home
+</button>
+</a>
+</p>
+
+</html>

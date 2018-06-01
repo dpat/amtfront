@@ -72,8 +72,9 @@ def exam(exam_id):
 
         print(payload, file=sys.stderr)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
+        cert = json.loads(r.text)
         session.pop('exam', None)
-        return redirect(url_for('home', userid=userid))
+        return render_template('exam_complete.html', cert=cert)
 
     else:
         url = (baseurl + '/exam/' + exam_id + '/take')
@@ -83,6 +84,24 @@ def exam(exam_id):
         session['exam'] = exam
 
         return render_template('exam.html', exam=exam, user_id=userid)
+
+@app.route('/exam/<exam_id>/ula', methods=['post','get'])
+def ula(exam_id):
+    baseurl = str(app.config.get('baseurl'))
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return redirect(url_for('login'))
+
+    url = (baseurl + '/exam/' + exam_id)
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+    response = requests.get(url, headers=headers)
+    exam = json.loads(response.text)
+    ula = exam['ula']
+
+    return render_template('ula.html', ula=ula, exam_id=exam_id)
+
 
 @app.route('/admin')
 def admin():

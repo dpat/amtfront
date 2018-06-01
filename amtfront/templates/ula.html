@@ -1,0 +1,33 @@
+<html>
+
+<p>
+<h2> This is a timed test. Questions will be submitted upon submission or time expiration </h2>
+</p>
+
+<p>
+<h3> ULA: {{ ula }} </h3>
+</p>
+
+<p>
+<h3> I have read, understand, and agree to the terms and conditions above </h3>
+</p>
+
+<p>
+
+  <p>
+  <a href="{{ url_for('exam', exam_id=exam_id) }}"
+  <button type="button">
+  Accept
+  </button>
+  </a>
+  </p>
+
+  <a href="{{ url_for('home') }}"
+  <button type="button">
+  Decline
+  </button>
+  </a>
+
+</p>
+
+</html>
