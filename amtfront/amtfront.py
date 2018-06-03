@@ -66,11 +66,16 @@ def exam(exam_id):
         exam = session['exam']
 
         for question in exam["questions"]:
+
             quid = str(question['questionid'])
-            answerid = request.form[quid]
+
+            if quid not in request.form:
+                answerid = int(-1)
+            else:
+                answerid = int(request.form[quid])
+
             payload.append({"questionid":question['questionid'], "answerid":answerid})
 
-        print(payload, file=sys.stderr)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         cert = json.loads(r.text)
         session.pop('exam', None)
@@ -376,6 +381,7 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
 
 @app.route('/handle_data', methods=['POST'])
 def handle_data():
+    print(app.config.get('token'), file=sys.stderr)
     baseurl = str(app.config.get('baseurl'))
 
     if request.method == 'POST':
@@ -385,12 +391,19 @@ def handle_data():
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         response = json.loads(r.text)
+
+
         session['userid'] = response["userid"]
         session['admin'] = response["admin"]
         return json.dumps(response)
 
 
 if __name__=='__main__':
-    app.config['baseurl'] = sys.argv[1]
-    app.config['token'] = sys.argv[2]
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('baseurl')
+    parser.add_argument('token')
+    args = parser.parse_args()
+    app.config['baseurl'] = args.baseurl
+    app.config['token'] = args.token
     app.run(port=8000, ssl_context='adhoc')
