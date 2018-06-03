@@ -128,7 +128,77 @@ def admin():
 
     return render_template('admin.html', exams=exams)
 
-@app.route('/admin/exam/<exam_id>', methods=['delete','post','get'])
+@app.route('/admin/users', methods=['get'])
+def admin_user_view():
+
+    baseurl = str(app.config.get('baseurl'))
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
+
+    url = (baseurl + '/user')
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+    response = requests.get(url, headers=headers)
+    users = json.loads(response.text)
+
+    return render_template('admin_user_select.html', users=users)
+
+@app.route('/admin/user/<user_id>', methods=['post','get'])
+def admin_user(user_id):
+
+    baseurl = str(app.config.get('baseurl'))
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
+
+    url = (baseurl + '/user/' + user_id)
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+    response = requests.get(url, headers=headers)
+    user = json.loads(response.text)
+
+    if request.method=='POST':
+
+        name = request.form.get('name')
+        email = request.form.get('email')
+        amt_name = request.form.get('amt_name')
+        kingdom = request.form.get('kingdom')
+        admin = (request.form.get('admin')).lower()
+
+        url = (baseurl + '/user/' + user_id)
+        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+        payload = {'name':name, 'email':email, 'amt_name':amt_name, 'kingdom':kingdom, 'admin':json.loads(admin)}
+        r = requests.put(url, data=json.dumps(payload), headers=headers)
+
+        return redirect(url_for('admin_user_view'))
+
+    else:
+        return render_template('admin_user.html', user=user)
+
+@app.route('/admin/certs', methods=['post','get'])
+def admin_certs():
+
+    baseurl = str(app.config.get('baseurl'))
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return redirect(url_for('login'))
+
+    if not session["admin"]:
+        return redirect(url_for('home'))
+
+
+@app.route('/admin/exam/<exam_id>', methods=['post','get'])
 def admin_exam(exam_id):
 
     baseurl = str(app.config.get('baseurl'))
@@ -190,7 +260,7 @@ def admin_exam(exam_id):
 
             return render_template('admin_exam.html', sections=sections, exam_id=exam_id, exam=exam)
 
-@app.route('/admin/section/<exam_id>/<section_id>', methods=['delete','post','get'])
+@app.route('/admin/section/<exam_id>/<section_id>', methods=['post','get'])
 def admin_section(exam_id, section_id):
 
     baseurl = str(app.config.get('baseurl'))
@@ -242,7 +312,7 @@ def admin_section(exam_id, section_id):
 
         return render_template('admin_section.html', exam_id=exam_id, section_id=section_id, section=section)
 
-@app.route('/admin/question/<exam_id>/<section_id>/<question_id>', methods=['delete','post','get'])
+@app.route('/admin/question/<exam_id>/<section_id>/<question_id>', methods=['post','get'])
 def admin_question(exam_id, section_id, question_id):
 
     baseurl = str(app.config.get('baseurl'))
@@ -319,7 +389,7 @@ def admin_question(exam_id, section_id, question_id):
 
         return render_template('admin_question.html', exam_id=exam_id, section_id=section_id, question_id=question_id, question=question)
 
-@app.route('/admin/answer/<exam_id>/<section_id>/<question_id>/<answer_id>', methods=['delete','post','get'])
+@app.route('/admin/answer/<exam_id>/<section_id>/<question_id>/<answer_id>', methods=['post','get'])
 def admin_answer(exam_id, section_id, question_id, answer_id):
 
     baseurl = str(app.config.get('baseurl'))
