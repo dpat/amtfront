@@ -1,5 +1,14 @@
 <html>
 
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    {% if admin %}
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
+
   {% if not admin %}
     <h1> Welcome {{ user.name }} </h1>
   {% endif %}
@@ -18,7 +27,7 @@
   {% for exam in exams %}
     <li>
     <p>
-      <a href="{{ url_for('exam', exam_id=exam.examid, user_id=user.userid) }}"
+      <a href="{{ url_for('ula', exam_id=exam.examid) }}"
       <button type="button">
       {{ exam.name }}
       </button>
@@ -31,9 +40,10 @@
   {% for cert in certs.keys() %}
 
     <p>
-      Exam {{ cert }}  passed:  on {{ certs[cert]['testdate'] }}
+      {{ certs[cert]['examname'] }}:  Passed  on {{ certs[cert]['testdate'] }}
       with a score of {{ certs[cert]['correct'] }} out of {{ certs[cert]['possible'] }}
     </p>
+
   {% endfor %}
 
 

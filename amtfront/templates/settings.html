@@ -1,0 +1,29 @@
+<html>
+<body>
+
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    {% if user.admin %}
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
+
+<h1> Settings </h1>
+
+<form action="" method="post">
+    <p>
+        <label for="amt_name">Amtgard Name</label>
+        <input type="text" name="amt_name" value="{{ user.amt_name }}">
+    </p>
+    <p>
+        <label for="kingdom">kingdom</label>
+        <input type="text" name="kingdom" value="{{ user.kingdom }}">
+    </p>
+    <p>
+      <input type="submit">
+    </p>
+
+</body>
+</html>
