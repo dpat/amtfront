@@ -78,7 +78,8 @@ def exam(exam_id):
 
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         cert = json.loads(r.text)
-        session.pop('exam', None)
+        if 'exam' in session:
+            session.pop('exam', None)
         return render_template('exam_complete.html', cert=cert)
 
     else:
@@ -90,7 +91,7 @@ def exam(exam_id):
 
         return render_template('exam.html', exam=exam, user_id=userid)
 
-@app.route('/exam/<exam_id>/ula', methods=['post','get'])
+@app.route('/exam/<exam_id>/ula', methods=['get'])
 def ula(exam_id):
     baseurl = str(app.config.get('baseurl'))
 
@@ -107,6 +108,41 @@ def ula(exam_id):
 
     return render_template('ula.html', ula=ula, exam_id=exam_id)
 
+@app.route('/logout', methods=['get'])
+def logout():
+    if 'userid' in session:
+        session.pop('userid', None)
+    if 'exam' in session:
+        session.pop('exam', None)
+
+    return redirect(url_for('login'))
+
+@app.route('/settings', methods=['post','get'])
+def settings():
+    baseurl = str(app.config.get('baseurl'))
+
+    if 'userid' in session:
+        userid = str(session['userid'])
+    else:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        amt_name = request.form.get('amt_name')
+        kingdom = request.form.get('kingdom')
+
+        url = (baseurl + '/user/' + userid)
+        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+        payload = {'amt_name':amt_name, 'kingdom':kingdom}
+        response = requests.put(url, data=json.dumps(payload), headers=headers)
+        return redirect(url_for('settings'))
+
+    else:
+        url = (baseurl + '/user/' + userid)
+        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+        response = requests.get(url, headers=headers)
+        user = json.loads(response.text)
+
+        return render_template('settings.html', user=user)
 
 @app.route('/admin')
 def admin():
@@ -184,8 +220,9 @@ def admin_user(user_id):
     else:
         return render_template('admin_user.html', user=user)
 
-@app.route('/admin/certs', methods=['post','get'])
-def admin_certs():
+
+@app.route('/admin/certs/<method>', methods=['get'])
+def admin_certs(method):
 
     baseurl = str(app.config.get('baseurl'))
 
@@ -196,6 +233,13 @@ def admin_certs():
 
     if not session["admin"]:
         return redirect(url_for('home'))
+
+    if method == "all":
+        url = (baseurl + '/certificate')
+        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+        response = requests.get(url, headers=headers)
+        certs = json.loads(response.text)
+        return render_template('admin_certs.html', certs=certs)
 
 
 @app.route('/admin/exam/<exam_id>', methods=['post','get'])
