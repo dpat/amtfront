@@ -11,10 +11,6 @@
   </head>
   <body>
     <script>
-      request = new XMLHttpRequest;
-      request.open('GET', 'http://localhost:5000/amttest/api/user', true);
-      request.onload="test";
-      request.send();
 
       window.fbAsyncInit = function() {
         FB.init({
@@ -23,10 +19,25 @@
           xfbml      : true,
           version    : 'v2.8'
         });
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
+
       };
+
+    function login()
+    {
+    FB.login(function(response) {
+       if (response.authResponse) {
+          statusChangeCallback(response);
+        } else {
+          console.log('User cancelled login or did not fully authorize.');
+        }
+      }, {scope: 'email'});
+    }
+    function attemptLogin(){
+      FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+      });
+    }
+
       (function(d, s, id){
          var js, fjs = d.getElementsByTagName(s)[0];
          if (d.getElementById(id)) {return;}
@@ -37,11 +48,11 @@
        function statusChangeCallback(response){
          if(response.status === 'connected'){
            console.log('Logged in and authenticated');
-
            testAPI();
          } else {
            console.log('Not authenticated');
            setElements(false);
+           login();
          }
        }
       function checkLoginState() {
@@ -56,6 +67,7 @@
           }
         });
       }
+
 
       function buildProfile(user){
            var xhr = new XMLHttpRequest();
