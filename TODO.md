@@ -1,6 +1,4 @@
 - edit admin pages to match discussed looks (list sections etc)
-- navbar (home, user, admin, logout)
-- Admin/User view on admin page
 - Add token for secure connect between login and /handle_data
 - timeout on failed facebook login
 - edit HTML in templates for more appealing home, exam, and admin pages
@@ -11,3 +9,4 @@
 - lint / bug check
 - create install and init
 - add bootstrapping themes
+- look at weird true error
