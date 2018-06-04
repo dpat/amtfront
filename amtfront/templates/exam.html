@@ -42,7 +42,7 @@ var x = setInterval(function() {
       {% set count = 1 %}
       {% for answer in question.answers %}
         {% if count==1 %}
-          <input type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}" checked="checked">
+          <input type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}">
             {{ answer.answer }}<br><br>
         {% else %}
           <input type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}">  {{ answer.answer }}<br><br>
