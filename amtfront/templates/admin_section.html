@@ -1,11 +1,51 @@
 <html>
 <body>
 
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
+
+
+    <form action="" method="post">
+        <p>
+            <label for="name">name</label>
+            <input type="text" name="name" value="{{ section.name }}">
+        </p>
+        <p>
+            <label for="active_questions">active_questions</label>
+            <select name="active_questions" value="{{ section.active_questions }}">
+                <option value="0"> 0 </option>
+              {% for question in section.questions %}
+                <option value="{{ loop.index }}"> {{ loop.index }} </option>
+              {% endfor %}
+        </p>
+        <p>
+            <input type="submit">
+        </p>
+    </form>
+
+    {% if not section=={} %}
+    <form id="delete" action="" method="post">
+      <p>
+        <button onclick="Delete()">Delete this section</button>
+        <input id="delete1" name="delete" type="hidden" value="default">
+      </p>
+    </form>
+    {% endif %}
+
+    <p>
+      <h3> Questions: </h3>
+    </p>
+
     {% for question in section.questions %}
       <p>
+        {{ question.question }}
       <a href="{{ url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id=question.questionid) }}"
       <button type="button">
-      {{ 'edit ' + question.questionid|string}}
+      {{ 'edit '}}
       </button>
       </a>
       </p>
@@ -22,42 +62,6 @@
     {% endif %}
 
 
-    <form action="" method="post">
-        <p>
-            <label for="name">name</label>
-            <input type="text" name="name" value="{{ section.name }}">
-        </p>
-        <p>
-            <label for="active_questions">active_questions</label>
-            <input type="text" name="active_questions" value="{{ section.active_questions }}">
-        </p>
-        <p>
-            <input type="submit">
-        </p>
-    </form>
-
-    <form id="delete" action="" method="post">
-      <p>
-        <button onclick="Delete()">Delete this section</button>
-        <input id="delete1" name="delete" type="hidden" value="default">
-      </p>
-    </form>
-
-    <p>
-    <a href="{{ url_for('admin') }}"
-    <button type="button">
-    Admin Home
-    </button>
-    </a>
-    </p>
-
-    <p>
-    <a href="{{ url_for('home') }}"
-    <button type="button">
-    Home
-    </button>
-    </a>
-    </p>
 
 </body>
 </html>

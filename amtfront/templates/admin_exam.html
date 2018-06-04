@@ -1,27 +1,13 @@
 
-
 <html>
 <body>
 
-    {% for section in sections %}
-      <p>
-        <a href="{{ url_for('admin_section', exam_id=exam_id, section_id=section.sectionid) }}"
-        <button type="button">
-        {{ 'edit ' + section.name }}
-        </button>
-        </a>
-      </p>
-    {% endfor %}
-
-    {% if not exam=={} %}
-    <p>
-      <a href="{{ url_for('admin_section', exam_id=exam_id, section_id='new') }}"
-      <button type="button">
-      {{ 'create new section' }}
-      </button>
-      </a>
-    </p>
-    {% endif %}
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
 
 
     <form action="" method="post">
@@ -50,28 +36,40 @@
         </p>
     </form>
 
+    {% if not exam=={} %}
     <form id="delete" action="" method="post">
       <p>
         <button onclick="Delete()">Delete this exam</button>
         <input id="delete1" name="delete" type="hidden" value="default">
       </p>
     </form>
+    {% endif %}
 
     <p>
-    <a href="{{ url_for('admin') }}"
-    <button type="button">
-    Admin Home
-    </button>
-    </a>
+      <h3> Sections: </h3>
     </p>
 
+    {% for section in sections %}
+      <p>
+        {{ section.name }}
+        <a href="{{ url_for('admin_section', exam_id=exam_id, section_id=section.sectionid) }}"
+        <button type="button">
+        {{ 'edit ' }}
+        </button>
+        </a>
+      </p>
+    {% endfor %}
+
+    {% if not exam=={} %}
     <p>
-    <a href="{{ url_for('home') }}"
-    <button type="button">
-    Home
-    </button>
-    </a>
+      <a href="{{ url_for('admin_section', exam_id=exam_id, section_id='new') }}"
+      <button type="button">
+      {{ 'create new section' }}
+      </button>
+      </a>
     </p>
+    {% endif %}
+
 
 </body>
 </html>

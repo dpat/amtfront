@@ -1,6 +1,12 @@
 <html>
 <body>
 
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
 
     <form action="" method="post">
         <p>
@@ -25,21 +31,7 @@
     </form>
     {% endif %}
 
-    <p>
-    <a href="{{ url_for('admin') }}"
-    <button type="button">
-    Admin Home
-    </button>
-    </a>
-    </p>
 
-    <p>
-    <a href="{{ url_for('home') }}"
-    <button type="button">
-    Home
-    </button>
-    </a>
-    </p>
 
 </body>
 </html>

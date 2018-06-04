@@ -1,6 +1,11 @@
 <html>
 <body>
-
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
 
     {% if question=={} %}
     <form action="" method="post">
@@ -71,7 +76,7 @@
         <p>
         <a href="{{ url_for('admin_answer', exam_id=exam_id, section_id=section_id, question_id=question_id, answer_id=answer.answerid) }}"
         <button type="button">
-        {{ 'edit ' + answer.answerid|string}}
+        {{ 'edit ' + answer.answer}}
         </button>
         </a>
         </p>
@@ -87,22 +92,6 @@
 
     {% endif %}
 
-
-    <p>
-    <a href="{{ url_for('admin') }}"
-    <button type="button">
-    Admin Home
-    </button>
-    </a>
-    </p>
-
-    <p>
-    <a href="{{ url_for('home') }}"
-    <button type="button">
-    Home
-    </button>
-    </a>
-    </p>
 
 </body>
 </html>
