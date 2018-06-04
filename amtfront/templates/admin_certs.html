@@ -1,0 +1,23 @@
+<html>
+<body>
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    {% if admin %}
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
+
+{% for cert in certs %}
+<p>
+  Exam: {{ cert['examname'] }}
+  <br>User: {{ cert['username'] }}
+  <br>Status: {% if cert['passed'] %}Passed{% else %}Failed{% endif %}
+  <br>Score: {{ cert['correct'] }} out of {{ cert['possible'] }}
+  <br>Completed: {{ cert['testdate'] }}
+</p>
+{% endfor %}
+
+</body>
+</html>
