@@ -9,23 +9,57 @@
     <li><a href="{{ url_for('logout') }}">Logout</a></li>
   </ul>
 
+{% if exam=={} %}
+<form name="examForm" action="" method="post" onsubmit="return validate()">
+    <p>
+        <label for="name">name</label>
+        <input type="text" name="name" value="" required>
+    </p>
+    <p>
+        <label for="pass_percent">pass_percent</label>
+        <input type="text" name="pass_percent" value="75" required>
+        <label id="pass_percent"></label>
+    </p>
+    <p>
+        <label for="time_limit">time_limit</label>
+        <input type="text" name="time_limit" value="30" required>
+        <label id="time_limit"></label>
+    </p>
+    <p>
+        <label for="expiration">expiration</label>
+        <input type="text" name="expiration" value="12" required>
+        <label id="expiration"></label>
+    </p>
+    <p>
+        <label for="ula">ula</label>
+        <textarea type="text" name="ula" cols="40" rows="7"></textarea>
+    </p>
+    <p>
+        <input type="submit">
+    </p>
+</form>
 
-    <form action="" method="post">
+{% else %}
+
+    <form name="examForm" action="" method="post" onsubmit="return validate()">
         <p>
             <label for="name">name</label>
-            <input type="text" name="name" value="{{ exam.name }}">
+            <input type="text" name="name" value="{{ exam.name }}" required>
         </p>
         <p>
             <label for="pass_percent">pass_percent</label>
-            <input type="text" name="pass_percent" value="{{ exam.pass_percent }}">
+            <input type="text" name="pass_percent" value="{{ exam.pass_percent }}" required>
+            <label id="pass_percent"></label>
         </p>
         <p>
             <label for="time_limit">time_limit</label>
-            <input type="text" name="time_limit" value="{{ exam.time_limit }}">
+            <input type="text" name="time_limit" value="{{ exam.time_limit }}" required>
+            <label id="time_limit"></label>
         </p>
         <p>
             <label for="expiration">expiration</label>
-            <input type="text" name="expiration" value="{{ exam.expiration }}">
+            <input type="text" name="expiration" value="{{ exam.expiration }}" required>
+            <label id="expiration"></label>
         </p>
         <p>
             <label for="ula">ula</label>
@@ -36,7 +70,6 @@
         </p>
     </form>
 
-    {% if not exam=={} %}
     <form id="delete" action="" method="post">
       <p>
         <button onclick="Delete()">Delete this exam</button>
@@ -75,6 +108,43 @@
 </html>
 
 <script>
+
+function validate() {
+  var percent, time_limit, expiration, text, caught;
+
+  caught = false
+  percent = document.forms["examForm"]["pass_percent"].value;
+  time_limit = document.forms["examForm"]["time_limit"].value;
+  expiration = document.forms["examForm"]["expiration"].value;
+
+    if (isNaN(percent) || percent < 1 || percent > 100) {
+        text = "Please enter a number between 1 and 100";
+        document.getElementById("pass_percent").innerHTML = text;
+        caught=true;
+    } else {
+        document.getElementById("pass_percent").innerHTML = "";
+    }
+    if (isNaN(time_limit) || time_limit < 1) {
+          text = "Please enter a valid time in minutes";
+          document.getElementById("time_limit").innerHTML = text;
+          caught=true;
+    } else {
+      document.getElementById("time_limit").innerHTML = "";
+    }
+    if (isNaN(expiration) || expiration < 1) {
+          text = "Please enter a valid expiration in months";
+          document.getElementById("expiration").innerHTML = text;
+          caught=true;
+    } else {
+      document.getElementById("expiration").innerHTML = "";
+    }
+
+    if (caught){
+      return false
+    }
+
+}
+
 function Delete() {
     if (confirm("Are you sure you want to delete this exam?")){
     document.getElementById("delete1").value = 'delete';
