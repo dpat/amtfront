@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from datetime import datetime
-import requests, json, flask, sys, ast, click, os
+import requests, json, flask, sys, os
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
