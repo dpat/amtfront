@@ -1,3 +1,5 @@
+### Official beta test is up for viewing at https://www.amttest.com/ 
+
 Initial development code base for flask front end of amttest
 
 Note: development version utilizes adhoc certificates for Facebook API testing
