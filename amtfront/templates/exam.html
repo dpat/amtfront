@@ -1,4 +1,6 @@
+<div class="timer">
 <p id="timer"></p>
+</div>
 
 <script>
 // Set the date we're counting down to
@@ -20,7 +22,7 @@ var x = setInterval(function() {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
   // Display the result in the element with id="demo"
-  document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+  document.getElementById("timer").innerHTML = "Time Remaining: " + hours + "h "
   + minutes + "m " + seconds + "s ";
 
   // If the count down is finished, write some text
@@ -33,7 +35,35 @@ var x = setInterval(function() {
 
 
 <html>
+<head>
+<style>
+.timer {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+}
 
+.timer p {
+    float: center;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 0px 16px;
+    text-decoration: none;
+}
+
+.main {
+    margin-top: 75px; /* Add a top margin to avoid content overlay */
+}
+
+</style>
+</head>
+
+<div class="main">
+
+<h1> {{ exam.name }} </h1>
   <form id="exam" action="" method="post">
 
   {% for question in exam.questions %}
@@ -58,5 +88,6 @@ var x = setInterval(function() {
 
   </form>
 
+</div>
 
 </html>

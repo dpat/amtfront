@@ -20,7 +20,7 @@
   {% endif %}
 
   {% if admin %}
-    <h1> Welcome Admin {{ user.name }} </h1>
+    <h1> Welcome {{ user.name }} </h1>
   {% endif %}
 
   <h3> Select An Exam </h3>
@@ -35,6 +35,7 @@
     </p>
   {% endfor %}
 
+  <h3> Certificates </h3>
   {% for cert in certs.keys() %}
 
     <p>
