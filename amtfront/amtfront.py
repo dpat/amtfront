@@ -389,7 +389,7 @@ def admin_question(exam_id, section_id, question_id):
             response = json.loads(r.text)
             question_id = response['questionid']
 
-            for i in range(0, 4):
+            for i in range(1, 5):
                 answer = request.form.get('answer' + str(i))
                 correct = request.form.get('correct' + str(i))
                 if answer and correct:
