@@ -204,16 +204,22 @@ def admin_user(user_id):
 
     if request.method=='POST':
 
-        name = request.form.get('name')
-        email = request.form.get('email')
-        amt_name = request.form.get('amt_name')
-        kingdom = request.form.get('kingdom')
-        admin = (request.form.get('admin')).lower()
+        if request.form.get('delete') == 'delete':
+            url = (baseurl + '/user/' + user_id)
+            headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+            r = requests.delete(url, headers=headers)
 
-        url = (baseurl + '/user/' + user_id)
-        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
-        payload = {'name':name, 'email':email, 'amt_name':amt_name, 'kingdom':kingdom, 'admin':json.loads(admin)}
-        r = requests.put(url, data=json.dumps(payload), headers=headers)
+        else:
+            name = request.form.get('name')
+            email = request.form.get('email')
+            amt_name = request.form.get('amt_name')
+            kingdom = request.form.get('kingdom')
+            admin = request.form.get('admin')
+
+            url = (baseurl + '/user/' + user_id)
+            headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+            payload = {'name':name, 'email':email, 'amt_name':amt_name, 'kingdom':kingdom, 'admin':json.loads(admin)}
+            r = requests.put(url, data=json.dumps(payload), headers=headers)
 
         return redirect(url_for('admin_user_view'))
 
@@ -411,7 +417,7 @@ def admin_question(exam_id, section_id, question_id):
 
             for answer in answers:
                 ans = request.form.get('answer' + str(answer["answerid"]))
-                correct = (request.form.get('correct' + str(answer["answerid"]))).lower()
+                correct = request.form.get('correct' + str(answer["answerid"]))
 
                 if ans and correct:
                     url = (baseurl + '/answer/' + str(answer['answerid']))
@@ -468,7 +474,7 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
         else:
 
             answer = request.form.get('answer')
-            correct = (request.form.get('correct')).lower()
+            correct = request.form.get('correct')
 
             url = (baseurl + '/answer/' + answer_id)
             headers = {'content-type': 'application/json', 'token':app.config.get('token')}
