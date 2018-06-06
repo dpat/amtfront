@@ -77,9 +77,11 @@
            var name = user.name;
            var email = user.email;
            var data1 = JSON.stringify({"name":name, "email":email});
+           console.log(data1)
            xhr.send(data1);
            xhr.onload = function() {
-             window.location.href = 'home';
+
+             //window.location.href = 'home';
            }
        }
 
