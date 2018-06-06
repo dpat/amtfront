@@ -1,4 +1,10 @@
+<!DOCTYPE html>
 <html>
+
+<head>
+  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
+</head>
+
 
   <ul>
     <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -6,7 +12,7 @@
     <li><a href="{{ url_for('admin') }}">Admin</a></li>
     {% endif %}
     <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
   </ul>
 
   {% if not admin %}
@@ -15,17 +21,11 @@
 
   {% if admin %}
     <h1> Welcome Admin {{ user.name }} </h1>
-    <a href="{{ url_for('admin') }}"
-    <button type="button">
-    View Admin Pages
-    </button>
-    </a>
   {% endif %}
 
   <h3> Select An Exam </h3>
-  <ul>
+
   {% for exam in exams %}
-    <li>
     <p>
       <a href="{{ url_for('ula', exam_id=exam.examid) }}"
       <button type="button">
@@ -33,9 +33,7 @@
       </button>
       </a>
     </p>
-  </li>
   {% endfor %}
-</ul>
 
   {% for cert in certs.keys() %}
 
