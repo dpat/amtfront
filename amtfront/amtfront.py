@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from OpenSSL import SSL
 from datetime import datetime
 import requests, json, flask, sys, ast, click, os
 
@@ -520,6 +519,8 @@ def handle_data():
 
 if __name__=='__main__':
     import argparse
+    from OpenSSL import SSL
+
     parser = argparse.ArgumentParser()
     parser.add_argument('baseurl')
     parser.add_argument('token')
