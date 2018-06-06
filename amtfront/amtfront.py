@@ -500,7 +500,7 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
 
 @app.route('/handle_data', methods=['POST'])
 def handle_data():
-    print(app.config.get('token'), file=sys.stderr)
+
     baseurl = str(app.config.get('baseurl'))
 
     if request.method == 'POST':
