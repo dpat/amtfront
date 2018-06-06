@@ -11,11 +11,11 @@
     <form action="" method="post">
         <p>
             <label for="name">name</label>
-            <input type="text" name="name" value="{{ user.name }}">
+            <input type="text" name="name" value="{{ user.name }}" required>
         </p>
         <p>
             <label for="email">email</label>
-            <input type="text" name="email" value="{{ user.email }}">
+            <input type="text" name="email" value="{{ user.email }}" required>
         </p>
         <p>
             <label for="amt_name">amt_name</label>
@@ -27,7 +27,15 @@
         </p>
         <p>
             <label for="admin">admin</label>
-            <input type="text" name="admin" value="{{ user.admin }}">
+            <select name="admin">
+                <option value="false"> no </option>
+                  {% if user.admin %}
+                <option value="true" selected="selected"> yes </option>
+                  {% else %}
+                <option value="true"> correct </option>
+                  {% endif %}
+
+            </select>
         </p>
 
         <p>

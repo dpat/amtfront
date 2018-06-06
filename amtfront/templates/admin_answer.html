@@ -15,7 +15,14 @@
         </p>
         <p>
             <label for="correct">correct</label>
-            <input type="text" name="correct" Value="{{ answer.correct }}">
+            <select name="correct">
+                <option value="false"> incorrect </option>
+                {% if answer.correct %}
+                  <option value="true" selected="selected"> correct </option>
+                {% else %}
+                  <option value="true"> correct </option>
+                {% endif %}
+            </select>
         </p>
         <p>
             <input type="submit">

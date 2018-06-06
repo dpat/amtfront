@@ -12,7 +12,7 @@
     <form action="" method="post">
         <p>
             <label for="name">name</label>
-            <input type="text" name="name" value="{{ section.name }}">
+            <input type="text" name="name" value="{{ section.name }}" required>
         </p>
         <p>
             <label for="active_questions">active_questions</label>
@@ -21,6 +21,7 @@
               {% for question in section.questions %}
                 <option value="{{ loop.index }}"> {{ loop.index }} </option>
               {% endfor %}
+            </select>
         </p>
         <p>
             <input type="submit">

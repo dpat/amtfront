@@ -8,34 +8,46 @@
   </ul>
 
     {% if question=={} %}
-    <form action="" method="post">
+    <form name="formQuestion" action="" method="post">
         <p>
             <label for="question">question</label>
-            <input type="text" name="question">
+            <input type="text" name="question" required>
         </p>
         <p>
             <label for="answer1">answer</label>
             <input type="text" name="answer1">
             <label for="correct1">correct</label>
-            <input type="text" name="correct1">
+            <select name="correct1">
+                <option value="false"> incorrect </option>
+                <option value="true"> correct </option>
+            </select>
         </p>
         <p>
             <label for="answer2">answer</label>
             <input type="text" name="answer2">
             <label for="correct2">correct</label>
-            <input type="text" name="correct2">
+            <select name="correct2">
+                <option value="false"> incorrect </option>
+                <option value="true"> correct </option>
+            </select>
         </p>
         <p>
             <label for="answer3">answer</label>
             <input type="text" name="answer3">
             <label for="correct3">correct</label>
-            <input type="text" name="correct3">
+            <select name="correct3">
+                <option value="false"> incorrect </option>
+                <option value="true"> correct </option>
+            </select>
         </p>
         <p>
             <label for="answer4">answer</label>
             <input type="text" name="answer4">
             <label for="correct4">correct</label>
-            <input type="text" name="correct4">
+            <select name="correct4">
+                <option value="false"> incorrect </option>
+                <option value="true"> correct </option>
+            </select>
         </p>
         <p>
             <input type="submit">
@@ -48,14 +60,21 @@
       <form action="" method="post">
         <p>
             <label for="question">question</label>
-            <input type="text" name="question" value="{{ question.question }}">
+            <input type="text" name="question" value="{{ question.question }}" required>
         </p>
         {% for answer in question.answers %}
         <p>
             <label for="answer{{ answer.answerid }}">answer</label>
             <input type="text" name="answer{{ answer.answerid }}" value="{{ answer.answer }}">
             <label for="correct{{ answer.answerid }}">correct</label>
-            <input type="text" name="correct{{ answer.answerid }}" value="{{ answer.correct }}">
+            <select name="correct{{ answer.answerid }}">
+                <option value="false"> incorrect </option>
+                {% if answer.correct %}
+                  <option value="true" selected="selected"> correct </option>
+                {% else %}
+                  <option value="true"> correct </option>
+                {% endif %}
+            </select>
         </p>
         {% endfor %}
 
@@ -72,6 +91,7 @@
         </p>
       </form>
 
+      <h3> Answers: </h3>
       {% for answer in question.answers %}
         <p>
         <a href="{{ url_for('admin_answer', exam_id=exam_id, section_id=section_id, question_id=question_id, answer_id=answer.answerid) }}"
