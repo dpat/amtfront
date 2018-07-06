@@ -3,8 +3,8 @@ from datetime import datetime
 import requests, json, flask, sys, os
 
 app = Flask(__name__)
-app.register_error_handler(500, error_500)
-app.register_error_handler(404, error_404)
+app.register_error_handler(500, ise)
+app.register_error_handler(404, page_not_found)
 
 
 app.secret_key = os.urandom(24)
@@ -52,7 +52,7 @@ def home():
     return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
 
 @app.errorhandler(500)
-def error_500(error):
+def ise(error):
     if session['exam']:
         exam = session['exam']
     else:
@@ -60,7 +60,7 @@ def error_500(error):
     return render_template('error.html', exam=exam, error=error), 500
 
 @app.errorhandler(404)
-def error_404(error):
+def page_not_found(error):
     if session['exam']:
         exam = session['exam']
     else:
