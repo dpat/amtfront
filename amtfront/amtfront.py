@@ -3,7 +3,7 @@ from datetime import datetime
 import requests, json, flask, sys, os
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = 'testing this out'
 
 @app.route('/')
 def login():
