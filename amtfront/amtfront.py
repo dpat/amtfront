@@ -88,9 +88,9 @@ def exam(exam_id):
     if request.method == 'POST':
         payload = []
 
-        exam = json.loads(session['exam'])
+        exam = str(session['exam'])
 
-        return render_template('error.html', exam=str(exam), error='500', payload=str(payload))
+        return render_template('error.html', exam=exam, error='500', payload=str(payload))
 
         for question in exam["questions"]:
 
