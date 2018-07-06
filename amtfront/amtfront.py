@@ -49,7 +49,7 @@ def home():
 
 @app.errorhandler(500):
 def internal_error(error):
-    return render_template('error.html', exam=session['exam'])
+    return render_template('error.html', exam=session['exam'], error=error)
 
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
