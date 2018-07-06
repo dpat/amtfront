@@ -47,7 +47,7 @@ def home():
 
     return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
 
-@app.errorhandler(500):
+@app.errorhandler(500)
 def internal_error(error):
     return render_template('error.html', exam=session['exam'], error=error)
 
