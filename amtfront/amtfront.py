@@ -3,8 +3,6 @@ from datetime import datetime
 import requests, json, flask, sys, os
 
 app = Flask(__name__)
-
-
 app.secret_key = os.urandom(24)
 
 @app.route('/')
@@ -48,6 +46,15 @@ def home():
             certdict[cert['examid']] = cert
 
     return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
+
+
+@app.errorhandler(Exception)
+def global_error(error):
+    if session['exam']:
+        exam = session['exam']
+    else:
+        exam = "none"
+    return render_template('error.html', exam=exam, error=error), 500
 
 @app.errorhandler(500)
 def ise(error):
@@ -549,7 +556,6 @@ if __name__=='__main__':
     args = parser.parse_args()
     app.config['baseurl'] = args.baseurl
     app.config['token'] = args.token
-    app.register_error_handler(500, ise)
-    app.register_error_handler(404, page_not_found)
+
 
     app.run(port=8000, ssl_context='adhoc')
