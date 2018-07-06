@@ -48,13 +48,20 @@ def home():
     return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
 
 @app.errorhandler(500)
-def internal_error(error):
+def error_500(error):
     if session['exam']:
         exam = session['exam']
     else:
         exam = "none"
     return render_template('error.html', exam=exam, error=error)
 
+@app.errorhandler(InternalServerError)
+def error_internal(error):
+    if session['exam']:
+        exam = session['exam']
+    else:
+        exam = "none"
+    return render_template('error.html', exam=exam, error=error)
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
