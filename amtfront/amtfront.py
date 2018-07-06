@@ -55,6 +55,13 @@ def error_500(error):
         exam = "none"
     return render_template('error.html', exam=exam, error=error)
 
+@app.errorhandler(404)
+def error_404(error):
+    if session['exam']:
+        exam = session['exam']
+    else:
+        exam = "none"
+    return render_template('error.html', exam=exam, error=error)
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
