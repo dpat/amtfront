@@ -87,9 +87,9 @@ def exam(exam_id):
 
     if request.method == 'POST':
         payload = []
-        return render_template('error.html', exam='exam', error='500', payload=payload)
 
         exam = session['exam']
+        return render_template('error.html', exam=exam, error='500', payload=payload)
 
         for question in exam["questions"]:
 
