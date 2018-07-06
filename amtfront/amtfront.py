@@ -3,8 +3,6 @@ from datetime import datetime
 import requests, json, flask, sys, os
 
 app = Flask(__name__)
-app.register_error_handler(500, ise)
-app.register_error_handler(404, page_not_found)
 
 
 app.secret_key = os.urandom(24)
@@ -551,4 +549,7 @@ if __name__=='__main__':
     args = parser.parse_args()
     app.config['baseurl'] = args.baseurl
     app.config['token'] = args.token
+    app.register_error_handler(500, ise)
+    app.register_error_handler(404, page_not_found)
+
     app.run(port=8000, ssl_context='adhoc')
