@@ -88,7 +88,8 @@ def exam(exam_id):
     if request.method == 'POST':
         payload = []
 
-        exam = session['exam']
+        exam = json.loads(session['exam'])
+
         return render_template('error.html', exam=exam, error='500', payload=payload)
 
         for question in exam["questions"]:
@@ -117,7 +118,7 @@ def exam(exam_id):
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         response = requests.get(url, headers=headers)
         exam = json.loads(response.text)
-        session['exam'] = exam
+        session['exam'] = response.text
 
         return render_template('exam.html', exam=exam, user_id=userid)
 
