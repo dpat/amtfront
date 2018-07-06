@@ -3,6 +3,10 @@ from datetime import datetime
 import requests, json, flask, sys, os
 
 app = Flask(__name__)
+app.register_error_handler(500, error_500)
+app.register_error_handler(404, error_404)
+
+
 app.secret_key = os.urandom(24)
 
 @app.route('/')
@@ -91,10 +95,13 @@ def exam(exam_id):
 
             payload.append({"questionid":question['questionid'], "answerid":answerid})
 
+
+        return render_template('error.html', exam=exam, error='500', payload=payload)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         cert = json.loads(r.text)
         if 'exam' in session:
             session.pop('exam', None)
+
 
         return render_template('exam_complete.html', cert=cert)
 
