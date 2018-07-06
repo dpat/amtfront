@@ -74,11 +74,13 @@ def exam(exam_id):
                 answerid = int(request.form[quid])
 
             payload.append({"questionid":question['questionid'], "answerid":answerid})
-
+        print(session['exam'], file=sys.stderr)
+        print(session['exam'], file=sys.stdout)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         cert = json.loads(r.text)
         if 'exam' in session:
             session.pop('exam', None)
+
         return render_template('exam_complete.html', cert=cert)
 
     else:
