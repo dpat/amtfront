@@ -54,23 +54,23 @@ def global_error(error):
         exam = session['exam']
     else:
         exam = "none"
-    return render_template('error.html', exam=exam, error=error), 500
+    return render_template('error.html', exam=str(exam), error=str(error)), 500
 
 @app.errorhandler(500)
 def ise(error):
     if session['exam']:
-        exam = session['exam']
+        exam = session.get('exam')
     else:
         exam = "none"
-    return render_template('error.html', exam=str(exam), error=error), 500
+    return render_template('error.html', exam=str(exam), error=str(error)), 500
 
 @app.errorhandler(404)
 def page_not_found(error):
     if session['exam']:
-        exam = session['exam']
+        exam = session.get('exam')
     else:
         exam = "none"
-    return render_template('error.html', exam=str(exam), error=error), 404
+    return render_template('error.html', exam=str(exam), error=str(error)), 404
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
@@ -88,9 +88,7 @@ def exam(exam_id):
     if request.method == 'POST':
         payload = []
 
-        exam = str(session['exam'])
-
-        return render_template('error.html', exam=exam, error='500', payload=str(payload))
+        exam = examholder
 
         for question in exam["questions"]:
 
@@ -104,7 +102,6 @@ def exam(exam_id):
             payload.append({"questionid":question['questionid'], "answerid":answerid})
 
 
-        return render_template('error.html', exam=exam, error='500', payload=payload)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         cert = json.loads(r.text)
         if 'exam' in session:
@@ -118,6 +115,7 @@ def exam(exam_id):
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         response = requests.get(url, headers=headers)
         exam = json.loads(response.text)
+        global examholder = exam
         session['exam'] = response.text
 
         return render_template('exam.html', exam=exam, user_id=userid)
@@ -552,7 +550,7 @@ def handle_data():
 if __name__=='__main__':
     import argparse
     from OpenSSL import SSL
-
+    global examholder = {}
     parser = argparse.ArgumentParser()
     parser.add_argument('baseurl')
     parser.add_argument('token')
