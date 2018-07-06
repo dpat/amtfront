@@ -53,7 +53,7 @@ def error_500(error):
         exam = session['exam']
     else:
         exam = "none"
-    return render_template('error.html', exam=exam, error=error)
+    return render_template('error.html', exam=exam, error=error), 500
 
 @app.errorhandler(404)
 def error_404(error):
@@ -61,7 +61,7 @@ def error_404(error):
         exam = session['exam']
     else:
         exam = "none"
-    return render_template('error.html', exam=exam, error=error)
+    return render_template('error.html', exam=exam, error=error), 404
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
