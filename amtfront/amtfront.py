@@ -90,10 +90,7 @@ def exam(exam_id):
                 answerid = int(request.form[quid])
 
             payload.append({"questionid":question['questionid'], "answerid":answerid})
-        print(session['exam'], file=sys.stderr)
-        print(session['exam'], file=sys.stdout)
-        print(payload, file=sys.stderr)
-        print(payload, file=sys.stdout)
+
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         cert = json.loads(r.text)
         if 'exam' in session:
