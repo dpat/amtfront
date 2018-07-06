@@ -47,6 +47,11 @@ def home():
 
     return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
 
+@app.errorhandler(500):
+def internal_error(error):
+    return render_template('error.html', exam=session['exam'])
+
+
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
 
@@ -76,6 +81,8 @@ def exam(exam_id):
             payload.append({"questionid":question['questionid'], "answerid":answerid})
         print(session['exam'], file=sys.stderr)
         print(session['exam'], file=sys.stdout)
+        print(payload, file=sys.stderr)
+        print(payload, file=sys.stdout)
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         cert = json.loads(r.text)
         if 'exam' in session:
