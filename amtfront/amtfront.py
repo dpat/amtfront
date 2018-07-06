@@ -62,7 +62,7 @@ def ise(error):
         exam = session['exam']
     else:
         exam = "none"
-    return render_template('error.html', exam=exam, error=error), 500
+    return render_template('error.html', exam=str(exam), error=error), 500
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -70,7 +70,7 @@ def page_not_found(error):
         exam = session['exam']
     else:
         exam = "none"
-    return render_template('error.html', exam=exam, error=error), 404
+    return render_template('error.html', exam=str(exam), error=error), 404
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
 def exam(exam_id):
@@ -90,7 +90,7 @@ def exam(exam_id):
 
         exam = json.loads(session['exam'])
 
-        return render_template('error.html', exam=exam, error='500', payload=payload)
+        return render_template('error.html', exam=str(exam), error='500', payload=str(payload))
 
         for question in exam["questions"]:
 
