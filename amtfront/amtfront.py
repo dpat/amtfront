@@ -3,7 +3,7 @@ from datetime import datetime
 import requests, json, flask, sys, os
 
 app = Flask(__name__)
-app.secret_key = "teststringbudummbum"
+app.secret_key = os.urandom(24)
 
 @app.route('/')
 def login():
@@ -118,6 +118,7 @@ def exam(exam_id):
         response = requests.get(url, headers=headers)
         exam = json.loads(response.text)
         session['exam'] = exam
+        return render_template('error.html', exam=session['exam'], error='500', payload=payload)
 
         return render_template('exam.html', exam=exam, user_id=userid)
 
