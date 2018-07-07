@@ -50,26 +50,17 @@ def home():
 
 @app.errorhandler(Exception)
 def global_error(error):
-    if session['exam']:
-        exam = session['exam']
-    else:
-        exam = "none"
+    exam = session.get('exam')
     return render_template('error.html', exam=str(exam), error=str(error)), 500
 
 @app.errorhandler(500)
 def ise(error):
-    if session['exam']:
-        exam = session.get('exam')
-    else:
-        exam = "none"
+    exam = session.get('exam')
     return render_template('error.html', exam=str(exam), error=str(error)), 500
 
 @app.errorhandler(404)
 def page_not_found(error):
-    if session['exam']:
-        exam = session.get('exam')
-    else:
-        exam = "none"
+    exam = session.get('exam')
     return render_template('error.html', exam=str(exam), error=str(error)), 404
 
 @app.route('/exam/<exam_id>', methods=['post','get'])
@@ -88,18 +79,16 @@ def exam(exam_id):
     if request.method == 'POST':
         payload = []
 
-        exam = examholder
+        exam = get_session_var('exam')
 
-        for question in exam["questions"]:
+        for qid in exam:
 
-            quid = str(question['questionid'])
-
-            if quid not in request.form:
+            if qid not in request.form:
                 answerid = int(-1)
             else:
-                answerid = int(request.form[quid])
+                answerid = int(request.form[qid])
 
-            payload.append({"questionid":question['questionid'], "answerid":answerid})
+            payload.append({"questionid":qid, "answerid":answerid})
 
 
         r = requests.post(url, data=json.dumps(payload), headers=headers)
@@ -107,18 +96,27 @@ def exam(exam_id):
         if 'exam' in session:
             session.pop('exam', None)
 
-
         return render_template('exam_complete.html', cert=cert)
 
     else:
         url = (baseurl + '/exam/' + exam_id + '/take')
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         response = requests.get(url, headers=headers)
-        exam = json.loads(response.text)
-        global examholder = exam
-        session['exam'] = response.text
 
-        return render_template('exam.html', exam=exam, user_id=userid)
+        session['exam'] = minimize_exam_dict(response.text)
+
+        return render_template('exam.html', exam=json.loads(response.text), user_id=userid)
+
+
+def minimize_exam_dict(exam):
+    as_json = json.loads(exam)
+    minimal = []
+    for question in as_json['questions']:
+        questid = question['questionid']
+        minimal.append(str(questid))
+
+    return minimal
+
 
 @app.route('/exam/<exam_id>/ula', methods=['get'])
 def ula(exam_id):
@@ -547,10 +545,18 @@ def handle_data():
         return json.dumps(response)
 
 
+def get_session_var(variable):
+    var = session.get(variable)
+    if not var:
+        message = 'Failed to find session variable %s' % var
+        return render_template('error.html', exam=None,
+                               error=message), 500
+    return var
+
+
 if __name__=='__main__':
     import argparse
     from OpenSSL import SSL
-    global examholder = {}
     parser = argparse.ArgumentParser()
     parser.add_argument('baseurl')
     parser.add_argument('token')
