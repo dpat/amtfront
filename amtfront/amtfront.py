@@ -113,7 +113,7 @@ def minimize_exam_dict(exam):
     minimal = []
     for question in as_json['questions']:
         questid = question['questionid']
-        minimal.append(int(questid))
+        minimal.append(str(questid))
 
     return minimal
 
