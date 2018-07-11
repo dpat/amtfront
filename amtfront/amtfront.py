@@ -45,6 +45,7 @@ def home():
         elif cert['examid'] not in certdict and cert['passed']:
             certdict[cert['examid']] = cert
 
+
     return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
 
 
