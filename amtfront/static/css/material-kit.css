@@ -60,6 +60,23 @@ section {
   display: block;
 }
 
+footer {
+  position:fixed;
+  bottom:0;
+  left:0;
+  width: 100%;
+}
+
+p {
+  text-align: center;
+}
+
+label {
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+}​
+
 body {
   margin: 0;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -89,6 +106,7 @@ h5,
 h6 {
   margin-top: 0;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 p {
@@ -171,6 +189,7 @@ a {
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
+
 }
 
 a:hover {
@@ -982,6 +1001,12 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
 
 .container {
   width: 100%;

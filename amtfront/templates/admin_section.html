@@ -1,23 +1,18 @@
 <html>
-<head>
-  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
-</head>
-<body>
+{% include 'base.html' %}
 
-  <ul>
-    <li><a href="{{ url_for('home') }}">Home</a></li>
-    <li><a href="{{ url_for('admin') }}">Admin</a></li>
-    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
+<body>
+  {% include 'navbartest.html' %}
 
 
     <form action="" method="post">
-        <p>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label for="name">name</label>
             <input type="text" name="name" value="{{ section.name }}" required>
-        </p>
-        <p>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label for="active_questions">active_questions</label>
             <select name="active_questions" value="{{ section.active_questions }}">
                 <option value="0"> 0 </option>
@@ -29,7 +24,7 @@
                 {% endif %}
               {% endfor %}
             </select>
-        </p>
+        </div> </div>
         <p>
             <input type="submit">
         </p>
@@ -52,7 +47,7 @@
       <p>
         {{ question.question }}
       <a href="{{ url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id=question.questionid) }}"
-      <button type="button">
+      <button type="button" class="btn btn-primary btn-default">
       {{ 'edit '}}
       </button>
       </a>
@@ -62,7 +57,7 @@
     {% if not section=={} %}
     <p>
       <a href="{{ url_for('admin_question', exam_id=exam_id, section_id=section_id, question_id='new') }}"
-      <button type="button">
+      <button type="button" class="btn btn-primary btn-default">
       {{ 'create new question' }}
       </button>
       </a>

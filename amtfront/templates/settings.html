@@ -1,32 +1,32 @@
 <html>
-<head>
-  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
-</head>
-<body>
+{% include 'base.html' %}
 
-  <ul>
-    <li><a href="{{ url_for('home') }}">Home</a></li>
-    {% if user.admin %}
-    <li><a href="{{ url_for('admin') }}">Admin</a></li>
-    {% endif %}
-    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
+<body>
+  {% include 'navbartest.html' %}
 
 <h1> Settings </h1>
 
 <form action="" method="post">
-    <p>
+  <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 col-centered">
         <label for="amt_name">Amtgard Name</label>
         <input type="text" name="amt_name" value="{{ user.amt_name }}">
-    </p>
-    <p>
-        <label for="kingdom">kingdom</label>
+      </div>
+      </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 col-centered">
+        <label for="kingdom">Kingdom</label>
         <input type="text" name="kingdom" value="{{ user.kingdom }}">
-    </p>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-centered">
     <p>
       <input type="submit">
     </p>
+  </div>
+  </div>
+
     {% include 'footer.html' %}
 </body>
 </html>

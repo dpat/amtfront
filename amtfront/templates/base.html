@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html>
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -25,61 +22,3 @@
   <script src="/static/js/material-kit.js?v=2.0.4" type="text/javascript"></script>
 
 </head>
-
-
-  {% include 'navbartest.html' %}
-
-  {% if not admin %}
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 ml-auto mr-auto">
-
-    <h1> Welcome {{ user.name }} </h1>
-    <h3> Select An Exam </h3>
-
-      </div>
-    </div>
-  </div>
-  {% endif %}
-
-  {% if admin %}
-    <div class="row">
-      <div class="col-lg-4 col-centered">
-
-    <h2> Welcome {{ user.name }} </h2>
-    <h3> Select An Exam </h3>
-
-    </div>
-  </div>
-  {% endif %}
-
-
-  {% for exam in exams %}
-  <div class="row">
-    <div class="col-lg-4 col-centered" style="text-align:center;">
-
-      <a href="{{ url_for('ula', exam_id=exam.examid) }}"
-      <button type="button" class="btn btn-primary btn-lg">
-      {{ exam.name }}
-      </button>
-      </a>
-    </div>
-  </div>
-  {% endfor %}
-  <div class="row">
-    <div class="col-lg-4 col-centered">
-
-  <h3> Certificates </h3>
-  {% for cert in certs.keys() %}
-
-    <h5>
-      {{ certs[cert]['examname'] }}:  Passed  on {{ certs[cert]['testdate'] }}
-      with a score of {{ certs[cert]['correct'] }} out of {{ certs[cert]['possible'] }}
-    </h5>
-
-  {% endfor %}
-</div>
-</div>
-  {% include 'footer.html' %}
-
-</html>
