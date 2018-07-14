@@ -9,13 +9,13 @@
     <form name="formQuestion" action="" method="post">
       <div class="row">
         <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label for="question">question</label>
+            <label style="width: 120px; for="question">question</label>
             <input type="text" name="question" required>
         </div>
       </div>
         <div class="row">
           <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label for="answer1">answer</label>
+            <label style="width: 120px; for="answer1">answer</label>
             <input type="text" name="answer1">
 
             <select name="correct1">
@@ -26,7 +26,7 @@
       </div>
       <div class="row">
         <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label for="answer2">answer</label>
+            <label style="width: 120px; for="answer2">answer</label>
             <input type="text" name="answer2">
 
             <select name="correct2">
@@ -38,7 +38,7 @@
 
         <div class="row">
   <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label for="answer3">answer</label>
+            <label style="width: 120px; for="answer3">answer</label>
             <input type="text" name="answer3">
 
             <select name="correct3">
@@ -48,7 +48,7 @@
         </div> </div>
         <div class="row">
   <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label for="answer4">answer</label>
+            <label style="width: 120px; for="answer4">answer</label>
             <input type="text" name="answer4">
 
             <select name="correct4">
@@ -68,13 +68,13 @@
       <form action="" method="post">
         <div class="row">
   <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label for="question">question</label>
+            <label style="width: 120px; for="question">question</label>
             <input type="text" name="question" value="{{ question.question }}" required>
         </div> </div>
         {% for answer in question.answers %}
         <div class="row">
   <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label for="answer{{ answer.answerid }}">answer</label>
+            <label style="width: 120px; for="answer{{ answer.answerid }}">answer</label>
             <input type="text" name="answer{{ answer.answerid }}" value="{{ answer.answer }}">
 
             <select name="correct{{ answer.answerid }}">
