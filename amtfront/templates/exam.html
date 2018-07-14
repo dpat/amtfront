@@ -36,6 +36,7 @@ var x = setInterval(function() {
 
 <html>
 <head>
+{% include 'base.html' %}
 <style>
 .timer {
     overflow: hidden;
@@ -67,19 +68,30 @@ var x = setInterval(function() {
   <form id="exam" action="" method="post">
 
   {% for question in exam.questions %}
-    <p>
-      <h5> {{ question.question }} </h5>
+    <div class="row" style="margin-left:10px;">
+<div class="col-lg-4 col-md-8 col-sm-10 col-xs-10 col-centered">
+     {{ question.question }}<br><br>
       {% set count = 1 %}
       {% for answer in question.answers %}
         {% if count==1 %}
-          <input type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}">
-            {{ answer.answer }}<br><br>
+
+            <div class="form-check">
+            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}">
+                                {{answer.answer}}
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                            <br><br>
         {% else %}
           <input type="radio" name="{{ question.questionid }}" value="{{ answer.answerid }}">  {{ answer.answer }}<br><br>
         {% endif %}
+      </div>
       {% endfor %}
       </a>
-    </p>
+    </div>
+  </div>
   {% endfor %}
 
   <p>
