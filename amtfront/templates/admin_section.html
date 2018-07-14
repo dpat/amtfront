@@ -8,12 +8,12 @@
     <form action="" method="post">
         <div class="row">
 <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label style="width: 120px; for="name">name</label>
+            <label style="width: 120px;" for="name">name</label>
             <input type="text" name="name" value="{{ section.name }}" required>
         </div> </div>
         <div class="row">
 <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
-            <label style="width: 120px; for="active_questions">active_questions</label>
+            <label style="width: 120px;" for="active_questions">active_questions</label>
             <select name="active_questions" value="{{ section.active_questions }}">
                 <option value="0"> 0 </option>
               {% for question in section.questions %}
