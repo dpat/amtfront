@@ -8,13 +8,13 @@
     {% if question=={} %}
     <form name="formQuestion" action="" method="post">
       <div class="row">
-        <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+        <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label style="width: 120px;" for="question">question</label>
             <input type="text" name="question" required>
         </div>
       </div>
         <div class="row">
-          <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+          <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label style="width: 120px;" for="answer1">answer</label>
             <input type="text" name="answer1">
 
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+        <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label style="width: 120px;" for="answer2">answer</label>
             <input type="text" name="answer2">
 
@@ -37,7 +37,7 @@
       </div>
 
         <div class="row">
-  <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label style="width: 120px;" for="answer3">answer</label>
             <input type="text" name="answer3">
 
@@ -47,7 +47,7 @@
             </select>
         </div> </div>
         <div class="row">
-  <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label style="width: 120px;" for="answer4">answer</label>
             <input type="text" name="answer4">
 
@@ -67,13 +67,13 @@
 
       <form action="" method="post">
         <div class="row">
-  <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label style="width: 120px;" for="question">question</label>
             <input type="text" name="question" value="{{ question.question }}" required>
         </div> </div>
         {% for answer in question.answers %}
         <div class="row">
-  <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
             <label style="width: 120px;" for="answer{{ answer.answerid }}">answer</label>
             <input type="text" name="answer{{ answer.answerid }}" value="{{ answer.answer }}">
 

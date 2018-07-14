@@ -523,6 +523,8 @@ h6 {
 p {
   margin-top: 0;
   margin-bottom: 1rem;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 abbr[title],
@@ -1011,6 +1013,17 @@ pre code {
 .col-centered{
     float: none;
     margin: 0 auto;
+    padding-right: 40px;
+    padding-left: 20px;
+}
+@media (max-width: 450px) {
+  .col-centered{
+      float: none;
+      margin: 0 auto;
+      text-align:center;
+      padding-right: 40px;
+      padding-left: 20px;
+  }
 }
 
 
