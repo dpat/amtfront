@@ -17,7 +17,8 @@ With a total of {{ cert.correct }} out of {{ cert.possible }} correct answers
 {% if incorrect %}
 <p> You missed the following questions
     {% for missed in incorrect %}
-        {{ missed }}
+    {{ missed }}
+    <br>
     {% endfor %}
 </p>
 {% endif %}
