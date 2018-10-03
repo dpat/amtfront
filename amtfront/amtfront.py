@@ -264,9 +264,6 @@ def admin_certs(method):
     else:
         return redirect(url_for('login'))
 
-    if not session["admin"]:
-        return redirect(url_for('home'))
-
     if method == "all":
         url = (baseurl + '/certificate')
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -563,6 +560,5 @@ if __name__=='__main__':
     args = parser.parse_args()
     app.config['baseurl'] = args.baseurl
     app.config['token'] = args.token
-
 
     app.run(port=8000, ssl_context='adhoc')
