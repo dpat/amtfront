@@ -4,16 +4,24 @@
 <body>
   {% include 'navbartest.html' %}
 
+  <table>
+    <tr>
+      <th> Exam </th>
+      <th> User </th>
+      <th> Result </th>
+      <th> Score </th>
+      <th> Date </th>
+    </tr>
 {% for cert in certs %}
-<p>
-  Exam: {{ cert['examname'] }}
-  <br>User: {{ cert['username'] }}
-  <br>Status: {% if cert['passed'] %}Passed{% else %}Failed{% endif %}
-  <br>Score: {{ cert['correct'] }} out of {{ cert['possible'] }}
-  <br>Completed: {{ cert['testdate'] }}
-</p>
+    <tr>
+        <td>{{ cert['examname'] }} </td>
+        <td>{{ cert['username'] }} </td>
+        <td>{% if cert['passed'] %}Passed{% else %}Failed{% endif %}</td>
+        <td>{{ cert['correct'] }} out of {{ cert['possible'] }}</td>
+        <td>{{ cert['testdate'] }}</td>
+    </tr>
 {% endfor %}
-
+  </table>
 {% include 'footer.html' %}
 </body>
 </html>

@@ -3,23 +3,29 @@
 
 <body>
   {% include 'navbartest.html' %}
-
+  <table>
+	  <tr>
+		<th> Name </th>
+		<th> Email </th>
+                <th> Amtgard Name </th>
+		<th> Kingdom </th>
+		<th> Admin? </th>
+		<th> Edit </th>
+	  </tr>
 {% for user in users %}
-
-  <p>
-    Name: {{ user.name }}
-    <br>Email: {{ user.email }}
-    <br>Amt_Name: {{ user.amt_name }}
-    <br>Kingdom: {{ user.kingdom }}
-    <br>Admin: {{ user.admin }}
-    <br><a href="{{ url_for('admin_user', user_id=user.userid) }}">
-    <button type="button" class="btn btn-primary btn-default">
-    {{ 'edit' }}
-    </button>
-    </a>
-  </p>
+  <tr>
+	  <td>{{ user.name }}</td>
+	  <td>{{ user.email }}</td>
+  	  <td>{{ user.amt_name }}</td>
+	  <td>{{ user.kingdom }}</td>
+	  <td>{{ user.admin }}</td>
+      <td><a href="{{ url_for('admin_user', user_id=user.userid) }}">
+			  <button type="button">{{ 'edit' }}</button>
+		  </a>
+	  </td>
+  </tr>
 {% endfor %}
-
+  </table>
 
 {% include 'footer.html' %}
 </body>

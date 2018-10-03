@@ -16,6 +16,15 @@ With a total of {{ cert.correct }} out of {{ cert.possible }} correct answers
 </br>
 </p>
 
+{% if incorrect %}
+<p> You missed the following questions
+    {% for missed in incorrect %}
+    {{ missed }}
+    <br>
+    {% endfor %}
+</p>
+{% endif %}
+
 <p>
 <a href="{{ url_for('home') }}"
 <button type="button" class="btn btn-primary btn-default">
