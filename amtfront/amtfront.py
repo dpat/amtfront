@@ -96,7 +96,12 @@ def exam(exam_id):
         if 'exam' in session:
             session.pop('exam', None)
 
-        return render_template('exam_complete.html', cert=cert)
+        if cert['incorrect']:
+            incorrect = cert.pop('incorrect')
+        else:
+            incorrect = []
+
+        return render_template('exam_complete.html', cert=cert, incorrect=incorrect)
 
     else:
         url = (baseurl + '/exam/' + exam_id + '/take')
