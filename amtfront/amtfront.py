@@ -96,7 +96,12 @@ def exam(exam_id):
         if 'exam' in session:
             session.pop('exam', None)
 
-        return render_template('exam_complete.html', cert=cert)
+        if cert['incorrect']:
+            incorrect = cert.pop('incorrect')
+        else:
+            incorrect = []
+
+        return render_template('exam_complete.html', cert=cert, incorrect=incorrect)
 
     else:
         url = (baseurl + '/exam/' + exam_id + '/take')
@@ -263,9 +268,6 @@ def admin_certs(method):
         userid = str(session['userid'])
     else:
         return redirect(url_for('login'))
-
-    if not session["admin"]:
-        return redirect(url_for('home'))
 
     if method == "all":
         url = (baseurl + '/certificate')
@@ -563,6 +565,5 @@ if __name__=='__main__':
     args = parser.parse_args()
     app.config['baseurl'] = args.baseurl
     app.config['token'] = args.token
-
 
     app.run(port=8000, ssl_context='adhoc')
