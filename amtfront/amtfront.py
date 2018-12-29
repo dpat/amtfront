@@ -299,7 +299,7 @@ def admin_certs(method):
     exams = json.loads(response.text)
     exam_ids = []
     for exam in exams:
-        exam_ids.append(exam.get('examid'))
+        exam_ids.append(str(exam.get('examid')))
     if method == "home":
         return render_template('admin_certs_home.html', exams=exams)
     if method == "all":
@@ -308,12 +308,10 @@ def admin_certs(method):
         certs = json.loads(response.text)
         return render_template('admin_certs.html', certs=certs)
 
-    if method in exam_ids:
+    if str(method) in exam_ids:
         url = (baseurl + '/certificate')
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
-        return render_template('admin_certs.html', certs=certs)
-
         users = {}
         for cert in certs[::-1]:
             if cert.get('examid') != method:
@@ -322,6 +320,7 @@ def admin_certs(method):
                 users[cert.get('user')] = cert
             elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
                 users[cert.get('user')] = cert
+        return render_template('admin_certs.html', certs=certs)
 
 
 
