@@ -295,10 +295,21 @@ def admin_certs(method):
 
     if method == "all":
         url = (baseurl + '/certificate')
-        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
-        return render_template('admin_certs.html', certs=certs)
+    if method in exam_names:
+        url = (baseurl + '/certificate')
+        response = requests.get(url, headers=headers)
+        certs = json.loads(response.text)
+        users = {}
+        for cert in certs[::-1]:
+            if cert.get('user') not in users:
+                users[cert.get('user')] = cert
+            elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
+                users[cert.get('user')] = cert
+            certs = users
+
+    return render_template('admin_certs.html', certs=certs)
 
 
 @app.route('/admin/exam/<exam_id>', methods=['post','get'])

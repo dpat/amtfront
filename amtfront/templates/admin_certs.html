@@ -13,13 +13,14 @@
       <th> Date </th>
     </tr>
 {% for cert in certs %}
-    <tr>
-        <td>{{ cert['examname'] }} </td>
-        <td>{{ cert['username'] }} </td>
-        <td>{% if cert['passed'] %}Passed{% else %}Failed{% endif %}</td>
-        <td>{{ cert['correct'] }} out of {{ cert['possible'] }}</td>
-        <td>{{ cert['testdate'] }}</td>
-    </tr>
+<p>
+  Exam: {{ cert['examname'] }}
+  <br>Name: {{ cert['amt_name'] }}
+  <br>Kingdom: {{ cert['kingdom'] }}
+  <br>Status: {% if cert['passed'] %}Passed{% else %}Failed{% endif %}
+  <br>Score: {{ cert['correct'] }} out of {{ cert['possible'] }}
+  <br>Completed: {{ cert['testdate'] }}
+</p>
 {% endfor %}
   </table>
 {% include 'footer.html' %}
