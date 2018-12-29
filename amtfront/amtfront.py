@@ -24,7 +24,7 @@ def check_amtname_kingdom():
 
 
 @app.route('/set_names', methods=['post','get'])
-def set_name():
+def set_names():
     baseurl = str(app.config.get('baseurl'))
 
     check_logged_in()
