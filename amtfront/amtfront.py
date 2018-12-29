@@ -313,7 +313,7 @@ def admin_certs(method):
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
         users = {}
-        for cert in certs:
+        for cert in certs[::-1]:
             if cert.get('examid') != method:
                 continue
             if cert.get('user') not in users:
@@ -321,7 +321,7 @@ def admin_certs(method):
             elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
                 users[cert.get('user')] = cert
 
-        return render_template('admin_certs.html', certs=users)
+        return render_template('admin_certs.html', certs=certs)
 
 
 @app.route('/admin/exam/<exam_id>', methods=['post','get'])
