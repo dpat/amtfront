@@ -584,6 +584,8 @@ def handle_data():
         session['has_required_names'] = True
         if amt_name == '' or kingdom == '':
             session['has_required_names'] = False
+            print('inside')
+        print(session['has_required_names'])
         user_id = response["userid"]
         url = (baseurl + '/user/' + user_id)
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
