@@ -297,21 +297,23 @@ def admin_certs(method):
     url = (baseurl + '/exam')
     response = requests.get(url, headers=headers)
     exams = json.loads(response.text)
-    exam_names = []
+    exam_ids = []
     for exam in exams:
-        exam_names.append(exam.get('name'))
+        exam_ids.append(exam.get('examid'))
     if method == "home":
         return render_template('admin_certs_home.html', exams=exams)
     if method == "all":
         url = (baseurl + '/certificate')
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
-    if method in exam_names:
+    if method in exam_ids:
         url = (baseurl + '/certificate')
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
         users = {}
         for cert in certs[::-1]:
+            if cert.get('examid') != method:
+                continue
             if cert.get('user') not in users:
                 users[cert.get('user')] = cert
             elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
