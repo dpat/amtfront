@@ -579,10 +579,10 @@ def handle_data():
 
         session['userid'] = response["userid"]
         session['admin'] = response["admin"]
-        amt_name = response.get('amt_name', '')
-        kingdom = response.get('kingdom', '')
+        amt_name = response.get('amt_name')
+        kingdom = response.get('kingdom')
         session['has_required_names'] = True
-        if amt_name == '' or kingdom == '':
+        if not amt_name or not kingdom:
             session['has_required_names'] = False
             print('inside')
         print(session['has_required_names'])
