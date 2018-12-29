@@ -293,6 +293,15 @@ def admin_certs(method):
     check_logged_in()
     check_amtname_kingdom()
 
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+    url = (baseurl + '/exam')
+    response = requests.get(url, headers=headers)
+    exams = json.loads(response.text)
+    exam_names = []
+    for exam in exams:
+        exam_names.append(exam.get('name'))
+    if method == "home":
+        return render_template('admin_certs_home.html', exams=exams)
     if method == "all":
         url = (baseurl + '/certificate')
         response = requests.get(url, headers=headers)
