@@ -20,7 +20,7 @@ def check_logged_in():
 
 def check_amtname_kingdom():
     if not session['has_required_names']:
-        return redirect(url_for('set_kingdom_and_amtname.html'))
+        return redirect(url_for('set_names'))
 
 
 @app.route('/set_names', methods=['post','get'])
