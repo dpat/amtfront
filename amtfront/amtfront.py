@@ -5,6 +5,46 @@ import requests, json, flask, sys, os
 app = Flask(__name__)
 app.secret_key = 'testing this out'
 
+
+def is_admin():
+    if session['admin']:
+        return True
+    else:
+        return False
+
+
+def check_logged_in():
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+
+
+def check_amtname_kingdom():
+    if not session['has_required_names']:
+        return redirect(url_for('set_names.html'))
+
+
+@app.route('/set_names', methods=['post','get'])
+def set_name():
+    baseurl = str(app.config.get('baseurl'))
+
+    check_logged_in()
+    userid = str(session['userid'])
+
+    if request.method == 'POST':
+        amt_name = request.form.get('amt_name')
+        kingdom = request.form.get('kingdom')
+
+        url = (baseurl + '/user/' + userid)
+        headers = {'content-type': 'application/json', 'token': app.config.get('token')}
+        payload = {'amt_name': amt_name, 'kingdom': kingdom}
+        response = requests.put(url, data=json.dumps(payload), headers=headers)
+        return redirect(url_for('settings'))
+
+    else:
+
+        return render_template('set_kingdom_and_amtname.html')
+
+
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -14,15 +54,10 @@ def home():
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
-
-    admin = False
-    if session['admin']:
-        admin = True
-
+    check_logged_in()
+    userid = str(session['userid'])
+    admin = is_admin()
+    check_amtname_kingdom()
     url = (baseurl + '/user/' + userid)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
     response = requests.get(url, headers=headers)
@@ -69,10 +104,9 @@ def exam(exam_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    userid = str(session['userid'])
+    check_amtname_kingdom()
 
     url = (baseurl + '/certificate/' + userid + '/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -123,10 +157,8 @@ def minimize_exam_dict(exam):
 def ula(exam_id):
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     url = (baseurl + '/exam/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -149,10 +181,9 @@ def logout():
 def settings():
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    userid = str(session['userid'])
+    check_amtname_kingdom()
 
     if request.method == 'POST':
         amt_name = request.form.get('amt_name')
@@ -177,10 +208,8 @@ def admin():
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -197,10 +226,8 @@ def admin_user_view():
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -217,10 +244,8 @@ def admin_user(user_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -260,10 +285,8 @@ def admin_certs(method):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -281,10 +304,8 @@ def admin_exam(exam_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -343,10 +364,8 @@ def admin_section(exam_id, section_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -395,10 +414,8 @@ def admin_question(exam_id, section_id, question_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -472,10 +489,8 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    check_logged_in()
+    check_amtname_kingdom()
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -540,9 +555,18 @@ def handle_data():
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         response = json.loads(r.text)
 
-
         session['userid'] = response["userid"]
         session['admin'] = response["admin"]
+        user_id = response["userid"]
+        url = (baseurl + '/user/' + user_id)
+        headers = {'content-type': 'application/json', 'token': app.config.get('token')}
+        response = requests.get(url, headers=headers)
+        user = json.loads(response.text)
+        amt_name = user.get('amt_name', '')
+        kingdom = user.get('kingdom', '')
+        session['has_required_names'] = True
+        if amt_name == '' or kingdom == '':
+            session['has_required_names'] = False
         return json.dumps(response)
 
 
