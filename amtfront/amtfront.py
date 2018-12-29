@@ -579,16 +579,15 @@ def handle_data():
 
         session['userid'] = response["userid"]
         session['admin'] = response["admin"]
+        amt_name = response.get('amt_name', '')
+        kingdom = response.get('kingdom', '')
+        session['has_required_names'] = True
+        if amt_name == '' or kingdom == '':
+            session['has_required_names'] = False
         user_id = response["userid"]
         url = (baseurl + '/user/' + user_id)
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
         response = requests.get(url, headers=headers)
-        user = json.loads(response.text)
-        amt_name = user.get('amt_name', '')
-        kingdom = user.get('kingdom', '')
-        session['has_required_names'] = True
-        if amt_name == '' or kingdom == '':
-            session['has_required_names'] = False
         return json.dumps(response)
 
 
