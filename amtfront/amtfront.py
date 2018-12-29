@@ -306,6 +306,8 @@ def admin_certs(method):
         url = (baseurl + '/certificate')
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
+        return render_template('admin_certs.html', certs=certs)
+
     if method in exam_ids:
         url = (baseurl + '/certificate')
         response = requests.get(url, headers=headers)
@@ -320,7 +322,7 @@ def admin_certs(method):
                 users[cert.get('user')] = cert
             certs = users
 
-    return render_template('admin_certs.html', certs=certs)
+            return render_template('admin_certs.html', certs=certs)
 
 
 @app.route('/admin/exam/<exam_id>', methods=['post','get'])
