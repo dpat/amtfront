@@ -7,7 +7,8 @@
 {% for cert in certs %}
 <p>
   Exam: {{ cert['examname'] }}
-  <br>User: {{ cert['username'] }}
+  <br>Name: {{ cert['amt_name'] }}
+  <br>Kingdom: {{ cert['kingdom'] }}
   <br>Status: {% if cert['passed'] %}Passed{% else %}Failed{% endif %}
   <br>Score: {{ cert['correct'] }} out of {{ cert['possible'] }}
   <br>Completed: {{ cert['testdate'] }}
