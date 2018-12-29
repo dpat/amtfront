@@ -314,7 +314,7 @@ def admin_certs(method):
         certs = json.loads(response.text)
         users = {}
         for cert in certs[::-1]:
-            if cert.get('examid') != method:
+            if str(cert.get('examid')) != str(method):
                 continue
             if cert.get('user') not in users:
                 users[cert.get('user')] = cert
