@@ -321,7 +321,7 @@ def admin_certs(method):
             elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
                 users[cert.get('user')] = cert
 
-            return render_template('admin_certs.html', certs=users)
+        return render_template('admin_certs.html', certs=users)
 
 
 @app.route('/admin/exam/<exam_id>', methods=['post','get'])
