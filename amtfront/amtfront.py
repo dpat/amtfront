@@ -335,7 +335,8 @@ def admin_certs(method):
                     users[cert.get('username')] = cert
                 elif not (users.get(cert.get('username'))).get('passed') and cert.get('passed'):
                     users[cert.get('username')] = cert
-        return render_template('admin_certs.html', certs=users)
+
+        return render_template('admin_certs.html', certs=users.values())
 
 
 
