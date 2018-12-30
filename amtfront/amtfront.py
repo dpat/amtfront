@@ -314,12 +314,11 @@ def admin_certs(method):
         certs = json.loads(response.text)
         users = {}
         for cert in certs[::-1]:
-            if str(cert.get('examid')) != str(method):
-                continue
-            if cert.get('user') not in users:
-                users[cert.get('user')] = cert
-            elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
-                users[cert.get('user')] = cert
+            if str(cert.get('examid')) == str(method):
+                if cert.get('user') not in users:
+                    users[cert.get('user')] = cert
+                elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
+                    users[cert.get('user')] = cert
         return render_template('admin_certs.html', certs=users)
 
 
