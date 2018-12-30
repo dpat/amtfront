@@ -1,8 +1,14 @@
 <html>
-{% include 'base.html' %}
-
+<head>
+  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
+</head>
 <body>
-  {% include 'navbartest.html' %}
+  <ul>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
+    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
 
   <table>
     <tr>
@@ -13,14 +19,14 @@
       <th> Date </th>
     </tr>
 {% for cert in certs %}
-<p>
-  Exam: {{ cert['examname'] }}
-  <br>Name: {{ cert['amt_name'] }}
-  <br>Kingdom: {{ cert['kingdom'] }}
-  <br>Status: {% if cert['passed'] %}Passed{% else %}Failed{% endif %}
-  <br>Score: {{ cert['correct'] }} out of {{ cert['possible'] }}
-  <br>Completed: {{ cert['testdate'] }}
-</p>
+    <tr>
+        <td>{{ cert['examname'] }} </td>
+        <td>{{ cert['amt_name'] }} </td>
+        <td>{{ cert['kingdom'] }} </td>
+        <td>{% if cert['passed'] %}Passed{% else %}Failed{% endif %}</td>
+        <td>{{ cert['correct'] }} out of {{ cert['possible'] }}</td>
+        <td>{{ cert['testdate'] }}</td>
+    </tr>
 {% endfor %}
   </table>
 {% include 'footer.html' %}
