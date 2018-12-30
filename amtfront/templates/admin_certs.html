@@ -21,7 +21,7 @@
 {% for cert in certs %}
     <tr>
         <td>{{ cert['examname'] }} </td>
-        <td>{{ cert['amt_name'] }} </td>
+        <td>{{ cert['amtname'] }} </td>
         <td>{{ cert['kingdom'] }} </td>
         <td>{% if cert['passed'] %}Passed{% else %}Failed{% endif %}</td>
         <td>{{ cert['correct'] }} out of {{ cert['possible'] }}</td>
