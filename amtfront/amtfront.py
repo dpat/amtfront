@@ -317,7 +317,7 @@ def admin_certs(method):
     for exam in exams:
         exam_ids.append(str(exam.get('examid')))
     if method == "home":
-        return render_template('admin_certs_home.html', exams=exams)
+        return render_template('admin_certs_home.html', exams=exams, admin=is_admin())
     if method == "all":
         url = (baseurl + '/certificate')
         response = requests.get(url, headers=headers)

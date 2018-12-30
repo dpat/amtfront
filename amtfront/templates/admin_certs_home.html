@@ -3,7 +3,7 @@
 
 <body>
   {% include 'navbartest.html' %}
-
+{% if admin %}
   <p>
     All Exams
     <br><a href="{{ url_for('admin_certs', method='all') }}">
@@ -12,6 +12,7 @@
     </button>
     </a>
   </p>
+{% endif %}
 
 {% for exam in exams %}
 
