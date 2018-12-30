@@ -329,7 +329,7 @@ def admin_certs(method):
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
         users = {}
-        for cert in certs:
+        for cert in certs[::-1]:
             if str(cert.get('examid')) == str(method):
                 if cert.get('username') not in users:
                     users[cert.get('username')] = cert
