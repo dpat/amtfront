@@ -42,21 +42,12 @@ def set_names():
 
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            return redirect(url_for('set_names'))
+            return render_template('set_kingdom_and_amtname.html', kingdoms=kingdoms, user=user)
         else:
             session['has_required_names'] = True
             return redirect(url_for('home'))
 
     else:
-        kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
-        "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
-        "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
-        "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
-        "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
-        "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
-        "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
-        "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
-        "The Golden City", "The Principality of Viridian Outlands"]
         url = (baseurl + '/user/' + userid)
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
         response = requests.get(url, headers=headers)
@@ -237,10 +228,10 @@ def settings():
 
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            return redirect(url_for('set_names'))
+            return render_template('set_kingdom_and_amtname.html', kingdoms=kingdoms, user=user)
         else:
             session['has_required_names'] = True
-            return redirect(url_for('settings'))
+            return render_template('settings.html', kingdoms=kingdoms, user=user)
 
     else:
         url = (baseurl + '/user/' + userid)
