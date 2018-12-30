@@ -40,7 +40,11 @@ def set_names():
             return redirect(url_for('home'))
 
     else:
-
+        url = (baseurl + '/user/' + userid)
+        headers = {'content-type': 'application/json', 'token': app.config.get('token')}
+        payload = {'amt_name': amt_name, 'kingdom': kingdom}
+        response = requests.put(url, data=json.dumps(payload), headers=headers)
+        user = json.loads(response.text)
         kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
         "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
         "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
