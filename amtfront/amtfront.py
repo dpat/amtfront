@@ -13,21 +13,13 @@ def is_admin():
         return False
 
 
-def check_logged_in():
-    if 'userid' not in session:
-        return redirect(url_for('login'))
-
-
-def check_amtname_kingdom():
-    if not session['has_required_names']:
-        return redirect(url_for('set_names'))
-
 
 @app.route('/set_names', methods=['post','get'])
 def set_names():
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
     userid = str(session['userid'])
 
     if request.method == 'POST':
@@ -53,11 +45,13 @@ def login():
 def home():
 
     baseurl = str(app.config.get('baseurl'))
-
-    check_logged_in()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
     userid = str(session['userid'])
     admin = is_admin()
-    check_amtname_kingdom()
+
     url = (baseurl + '/user/' + userid)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
     response = requests.get(url, headers=headers)
@@ -104,9 +98,11 @@ def exam(exam_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
     userid = str(session['userid'])
-    check_amtname_kingdom()
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     url = (baseurl + '/certificate/' + userid + '/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -162,8 +158,10 @@ def minimize_exam_dict(exam):
 def ula(exam_id):
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     url = (baseurl + '/exam/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -186,9 +184,10 @@ def logout():
 def settings():
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
+    if 'userid' not in session:return redirect(url_for('login'))
     userid = str(session['userid'])
-    check_amtname_kingdom()
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if request.method == 'POST':
         amt_name = request.form.get('amt_name')
@@ -206,15 +205,17 @@ def settings():
         response = requests.get(url, headers=headers)
         user = json.loads(response.text)
 
-        return render_template('settings.html', user=user, test=session['has_required_names'])
+        return render_template('settings.html', user=user)
 
 @app.route('/admin')
 def admin():
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -231,8 +232,9 @@ def admin_user_view():
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:    return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -249,8 +251,10 @@ def admin_user(user_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -290,8 +294,10 @@ def admin_certs(method):
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
     url = (baseurl + '/exam')
@@ -328,8 +334,10 @@ def admin_exam(exam_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -388,8 +396,10 @@ def admin_section(exam_id, section_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -438,8 +448,10 @@ def admin_question(exam_id, section_id, question_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -513,8 +525,10 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    check_logged_in()
-    check_amtname_kingdom()
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
