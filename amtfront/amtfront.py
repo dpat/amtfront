@@ -42,12 +42,13 @@ def set_names():
 
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            return render_template('set_kingdom_and_amtname.html', kingdoms=kingdoms, user=user)
+            return redirect(url_for('set_names'))
         else:
             session['has_required_names'] = True
             return redirect(url_for('home'))
 
     else:
+        
         url = (baseurl + '/user/' + userid)
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
         response = requests.get(url, headers=headers)
@@ -228,10 +229,10 @@ def settings():
 
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            return render_template('set_kingdom_and_amtname.html', kingdoms=kingdoms, user=user)
+            return redirect(url_for('set_names'))
         else:
             session['has_required_names'] = True
-            return render_template('settings.html', kingdoms=kingdoms, user=user)
+            return redirect(url_for('settings'))
 
     else:
         url = (baseurl + '/user/' + userid)
