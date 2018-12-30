@@ -16,7 +16,11 @@
         <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 col-centered">
         <label style="width: 120px;" for="kingdom">Kingdom</label>
-        <input type="text" name="kingdom" value="{{ user.kingdom }}">
+        <select name="kingdom">
+          {% for kingdom in kingdoms %}
+            <option value="{{kingdom}}"> {{kingdom}} </option>
+          {% endfor %}
+        </select>
       </div>
       </div>
       <div class="row">

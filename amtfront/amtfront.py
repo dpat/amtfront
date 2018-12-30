@@ -223,8 +223,16 @@ def settings():
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         response = requests.get(url, headers=headers)
         user = json.loads(response.text)
-
-        return render_template('settings.html', user=user)
+        kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+                    "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+                    "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+                    "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+                    "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+                    "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+                    "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+                    "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+                    "The Golden City", "The Principality of Viridian Outlands"]
+        return render_template('settings.html', kingdoms=kingdoms, user=user)
 
 @app.route('/admin')
 def admin():
@@ -305,7 +313,16 @@ def admin_user(user_id):
         return redirect(url_for('admin_user_view'))
 
     else:
-        return render_template('admin_user.html', user=user)
+        kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+                    "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+                    "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+                    "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+                    "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+                    "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+                    "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+                    "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+                    "The Golden City", "The Principality of Viridian Outlands"]
+        return render_template('admin_user.html', user=user, kingdoms=kingdoms)
 
 
 @app.route('/admin/certs/<method>', methods=['get'])
