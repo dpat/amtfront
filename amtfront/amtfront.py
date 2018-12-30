@@ -30,7 +30,12 @@ def set_names():
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
         payload = {'amt_name': amt_name, 'kingdom': kingdom}
         response = requests.put(url, data=json.dumps(payload), headers=headers)
-        return redirect(url_for('settings'))
+        if not amt_name or not kingdom:
+            session['has_required_names'] = False
+            return redirect(url_for('set_names'))
+        else:
+            session['has_required_names'] = True
+            return redirect(url_for('home'))
 
     else:
 
@@ -197,7 +202,12 @@ def settings():
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         payload = {'amt_name':amt_name, 'kingdom':kingdom}
         response = requests.put(url, data=json.dumps(payload), headers=headers)
-        return redirect(url_for('settings'))
+        if not amt_name or not kingdom:
+            session['has_required_names'] = False
+            return redirect(url_for('set_names'))
+        else:
+            session['has_required_names'] = True
+            return redirect(url_for('settings'))
 
     else:
         url = (baseurl + '/user/' + userid)
@@ -600,8 +610,6 @@ def handle_data():
         session['has_required_names'] = True
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            print('inside')
-        print(session['has_required_names'], file=sys.stderr)
         user_id = response["userid"]
         url = (baseurl + '/user/' + user_id)
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
