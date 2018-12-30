@@ -18,7 +18,11 @@
         <label style="width: 120px;" for="kingdom">Kingdom</label>
         <select name="kingdom">
           {% for kingdom in kingdoms %}
-            <option value="{{kingdom}}"> {{kingdom}} </option>
+            {% if user.kingdom == kingdom %}
+              <option value="{{kingdom}}" selected="selected"> {{kingdom}} </option>
+            {% else %}
+              <option value="{{kingdom}}"> {{kingdom}} </option>
+            {% endif %}
           {% endfor %}
         </select>
       </div>

@@ -17,7 +17,15 @@ def is_admin():
 @app.route('/set_names', methods=['post','get'])
 def set_names():
     baseurl = str(app.config.get('baseurl'))
-
+    kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+    "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+    "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+    "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+    "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+    "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+    "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+    "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+    "The Golden City", "The Principality of Viridian Outlands"]
     if 'userid' not in session:
         return redirect(url_for('login'))
     userid = str(session['userid'])
@@ -34,7 +42,7 @@ def set_names():
 
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            return redirect(url_for('set_names'))
+            return redirect(url_for('set_names', user=user, kingdoms=kingdoms))
         else:
             session['has_required_names'] = True
             return redirect(url_for('home'))
@@ -44,15 +52,7 @@ def set_names():
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
         response = requests.get(url, headers=headers)
         user = json.loads(response.text)
-        kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
-        "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
-        "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
-        "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
-        "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
-        "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
-        "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
-        "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
-        "The Golden City", "The Principality of Viridian Outlands"]
+
         return render_template('set_kingdom_and_amtname.html', user=user, kingdoms=kingdoms)
 
 
@@ -202,7 +202,15 @@ def logout():
 @app.route('/settings', methods=['post','get'])
 def settings():
     baseurl = str(app.config.get('baseurl'))
-
+    kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+                "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+                "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+                "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+                "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+                "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+                "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+                "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+                "The Golden City", "The Principality of Viridian Outlands"]
     if 'userid' not in session:return redirect(url_for('login'))
     userid = str(session['userid'])
     if not session['has_required_names']:
@@ -216,27 +224,21 @@ def settings():
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         payload = {'amt_name':amt_name, 'kingdom':kingdom}
         response = requests.put(url, data=json.dumps(payload), headers=headers)
+        user = json.loads(response.text)
+
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            return redirect(url_for('set_names'))
+            return redirect(url_for('set_names'), user=user, kingdoms=kingdoms)
         else:
             session['has_required_names'] = True
-            return redirect(url_for('settings'))
+            return redirect(url_for('settings'), user=user, kingdom=kingdoms)
 
     else:
         url = (baseurl + '/user/' + userid)
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         response = requests.get(url, headers=headers)
         user = json.loads(response.text)
-        kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
-                    "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
-                    "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
-                    "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
-                    "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
-                    "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
-                    "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
-                    "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
-                    "The Golden City", "The Principality of Viridian Outlands"]
+
         return render_template('settings.html', kingdoms=kingdoms, user=user)
 
 @app.route('/admin')
@@ -282,7 +284,15 @@ def admin_user_view():
 def admin_user(user_id):
 
     baseurl = str(app.config.get('baseurl'))
-
+    kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+                "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+                "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+                "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+                "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+                "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+                "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+                "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+                "The Golden City", "The Principality of Viridian Outlands"]
     if 'userid' not in session:
         return redirect(url_for('login'))
     if not session['has_required_names']:
@@ -318,15 +328,7 @@ def admin_user(user_id):
         return redirect(url_for('admin_user_view'))
 
     else:
-        kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
-                    "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
-                    "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
-                    "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
-                    "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
-                    "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
-                    "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
-                    "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
-                    "The Golden City", "The Principality of Viridian Outlands"]
+
         return render_template('admin_user.html', user=user, kingdoms=kingdoms)
 
 
