@@ -206,7 +206,7 @@ def settings():
         response = requests.get(url, headers=headers)
         user = json.loads(response.text)
 
-        return render_template('settings.html', user=user)
+        return render_template('settings.html', user=user, test=session['has_required_names'])
 
 @app.route('/admin')
 def admin():
