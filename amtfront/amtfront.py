@@ -331,10 +331,10 @@ def admin_certs(method):
         users = {}
         for cert in certs:
             if str(cert.get('examid')) == str(method):
-                if cert.get('user') not in users:
-                    users[cert.get('user')] = cert
+                if cert.get('username') not in users:
+                    users[cert.get('username')] = cert
                 elif not (users.get(cert.get('user'))).get('passed') and cert.get('passed'):
-                    users[cert.get('user')] = cert
+                    users[cert.get('username')] = cert
         return render_template('admin_certs.html', certs=users)
 
 
