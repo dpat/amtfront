@@ -228,10 +228,10 @@ def settings():
 
         if not amt_name or not kingdom:
             session['has_required_names'] = False
-            return redirect(url_for('set_names'), user=user, kingdoms=kingdoms)
+            return redirect(url_for('set_names', user=user, kingdoms=kingdoms))
         else:
             session['has_required_names'] = True
-            return redirect(url_for('settings'), user=user, kingdom=kingdoms)
+            return redirect(url_for('settings', user=user, kingdom=kingdoms))
 
     else:
         url = (baseurl + '/user/' + userid)
