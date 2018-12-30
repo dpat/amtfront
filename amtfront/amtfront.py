@@ -30,6 +30,8 @@ def set_names():
         headers = {'content-type': 'application/json', 'token': app.config.get('token')}
         payload = {'amt_name': amt_name, 'kingdom': kingdom}
         response = requests.put(url, data=json.dumps(payload), headers=headers)
+        user = json.loads(response.text)
+
         if not amt_name or not kingdom:
             session['has_required_names'] = False
             return redirect(url_for('set_names'))
@@ -48,7 +50,7 @@ def set_names():
         "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
         "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
         "The Golden City", "The Principality of Viridian Outlands"]
-        return render_template('set_kingdom_and_amtname.html', kingdoms=kingdoms)
+        return render_template('set_kingdom_and_amtname.html', user=user, kingdoms=kingdoms)
 
 
 @app.route('/')
