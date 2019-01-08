@@ -146,7 +146,7 @@ def exam(exam_id):
         if 'exam' in session:
             session.pop('exam', None)
 
-        if cert['incorrect']:
+        if cert.get('incorrect', None):
             incorrect = cert.pop('incorrect')
         else:
             incorrect = []
