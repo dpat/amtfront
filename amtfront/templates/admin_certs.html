@@ -3,17 +3,12 @@
   <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
 </head>
 <body>
-  <ul>
-    <li><a href="{{ url_for('home') }}">Home</a></li>
-    <li><a href="{{ url_for('admin') }}">Admin</a></li>
-    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
-
+  {% include 'navbartest.html' %}
   <table>
     <tr>
       <th> Exam </th>
       <th> User </th>
+      <th> Kingdom </th>
       <th> Result </th>
       <th> Score </th>
       <th> Date </th>
@@ -21,7 +16,8 @@
 {% for cert in certs %}
     <tr>
         <td>{{ cert['examname'] }} </td>
-        <td>{{ cert['username'] }} </td>
+        <td>{{ cert['amtname'] }} </td>
+        <td>{{ cert['kingdom'] }} </td>
         <td>{% if cert['passed'] %}Passed{% else %}Failed{% endif %}</td>
         <td>{{ cert['correct'] }} out of {{ cert['possible'] }}</td>
         <td>{{ cert['testdate'] }}</td>

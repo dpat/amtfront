@@ -1,44 +1,41 @@
 
 <html>
 
-<head>
-  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
-</head>
+{% include 'base.html' %}
 
 <body>
-
-  <ul>
-    <li><a href="{{ url_for('home') }}">Home</a></li>
-    <li><a href="{{ url_for('admin') }}">Admin</a></li>
-    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
+  {% include 'navbartest.html' %}
 
 {% if exam=={} %}
 <form name="examForm" action="" method="post" onsubmit="return validate()">
-    <p>
-        <label for="name">name</label>
+    <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+        <label style="width: 120px;" for="name">name</label>
         <input type="text" name="name" value="" required>
-    </p>
-    <p>
-        <label for="pass_percent">pass_percent</label>
+    </div> </div>
+    <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+        <label style="width: 120px;" for="pass_percent">pass_percent</label>
         <input type="text" name="pass_percent" value="75" required>
-        <label id="pass_percent"></label>
-    </p>
-    <p>
-        <label for="time_limit">time_limit</label>
+        <label style="width: 120px;" id="pass_percent"></label>
+    </div> </div>
+    <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+        <label style="width: 120px;" for="time_limit">time_limit</label>
         <input type="text" name="time_limit" value="30" required>
-        <label id="time_limit"></label>
-    </p>
-    <p>
-        <label for="expiration">expiration</label>
+        <label style="width: 120px;" id="time_limit"></label>
+    </div> </div>
+    <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+        <label style="width: 120px;" for="expiration">expiration</label>
         <input type="text" name="expiration" value="12" required>
-        <label id="expiration"></label>
-    </p>
-    <p>
-        <label for="ula">ula</label>
+        <label style="width: 120px;" id="expiration"></label>
+    </div> </div>
+    <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+        <label style="width: 120px;" for="ula">ula</label>
         <textarea type="text" name="ula" cols="40" rows="7"></textarea>
-    </p>
+    </div> </div>
     <p>
         <input type="submit">
     </p>
@@ -47,29 +44,34 @@
 {% else %}
 
     <form name="examForm" action="" method="post" onsubmit="return validate()">
-        <p>
-            <label for="name">name</label>
+        <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="name">name</label>
             <input type="text" name="name" value="{{ exam.name }}" required>
-        </p>
-        <p>
-            <label for="pass_percent">pass_percent</label>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="pass_percent">pass_percent</label>
             <input type="text" name="pass_percent" value="{{ exam.pass_percent }}" required>
-            <label id="pass_percent"></label>
-        </p>
-        <p>
-            <label for="time_limit">time_limit</label>
+            <label style="width: 120px;" id="pass_percent"></label>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="time_limit">time_limit</label>
             <input type="text" name="time_limit" value="{{ exam.time_limit }}" required>
-            <label id="time_limit"></label>
-        </p>
-        <p>
-            <label for="expiration">expiration</label>
+            <label style="width: 120px;" id="time_limit"></label>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="expiration">expiration</label>
             <input type="text" name="expiration" value="{{ exam.expiration }}" required>
-            <label id="expiration"></label>
-        </p>
-        <p>
-            <label for="ula">ula</label>
+            <label style="width: 120px;" id="expiration"></label>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-5 col-md-10 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="ula">ula</label>
             <textarea type="text" name="ula" cols="40" rows="7"> {{ exam.ula }} </textarea>
-        </p>
+        </div> </div>
         <p>
             <input type="submit">
         </p>
@@ -91,7 +93,7 @@
       <p>
         {{ section.name }}
         <a href="{{ url_for('admin_section', exam_id=exam_id, section_id=section.sectionid) }}"
-        <button type="button">
+        <button type="button" class="btn btn-primary btn-default">
         {{ 'edit ' }}
         </button>
         </a>
@@ -101,12 +103,14 @@
     {% if not exam=={} %}
     <p>
       <a href="{{ url_for('admin_section', exam_id=exam_id, section_id='new') }}"
-      <button type="button">
+      <button type="button" class="btn btn-primary btn-default">
       {{ 'create new section' }}
       </button>
       </a>
     </p>
     {% endif %}
+
+</p>
 
 {% include 'footer.html' %}
 </body>

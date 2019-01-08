@@ -1,0 +1,30 @@
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+    	<div class="navbar-header">
+    		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+    		</button>
+    		<a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+    	</div>
+
+    	<div class="collapse navbar-collapse">
+    		<ul class="nav navbar-nav">
+        		<li><a href="{{ url_for('home') }}">Home</a></li>
+						<li><a href="{{ url_for('settings') }}">User Settings</a></li>
+        		<li class="dropdown">
+        			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+        			<ul class="dropdown-menu">
+					  <li><a href="{{ url_for('admin') }}">Admin Home</a></li>
+					  <li><a href="{{ url_for('admin_user_view') }}">Edit Users</a></li>
+					  <li><a href="{{ url_for('admin_certs', method='home') }}">View Certs</a></li>
+        			</ul>
+        		</li>
+						<li><a href="{{ url_for('logout') }}">Logout</a></li>
+
+    		</ul>
+    	</div>
+	</div>
+</nav>

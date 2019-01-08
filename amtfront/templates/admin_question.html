@@ -1,58 +1,62 @@
-<html>
+</div><html>
 
-<head>
-  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
-</head>
+{% include 'base.html' %}
+
 <body>
-  <ul>
-    <li><a href="{{ url_for('home') }}">Home</a></li>
-    <li><a href="{{ url_for('admin') }}">Admin</a></li>
-    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
+  {% include 'navbartest.html' %}
 
     {% if question=={} %}
     <form name="formQuestion" action="" method="post">
-        <p>
-            <label for="question">question</label>
+      <div class="row">
+        <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="question">question</label>
             <input type="text" name="question" required>
-        </p>
-        <p>
-            <label for="answer1">answer</label>
+        </div>
+      </div>
+        <div class="row">
+          <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="answer1">answer</label>
             <input type="text" name="answer1">
-            <label for="correct1">correct</label>
+
             <select name="correct1">
                 <option value="false"> incorrect </option>
                 <option value="true"> correct </option>
             </select>
-        </p>
-        <p>
-            <label for="answer2">answer</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="answer2">answer</label>
             <input type="text" name="answer2">
-            <label for="correct2">correct</label>
+
             <select name="correct2">
                 <option value="false"> incorrect </option>
                 <option value="true"> correct </option>
             </select>
-        </p>
-        <p>
-            <label for="answer3">answer</label>
+        </div>
+      </div>
+
+        <div class="row">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="answer3">answer</label>
             <input type="text" name="answer3">
-            <label for="correct3">correct</label>
+
             <select name="correct3">
                 <option value="false"> incorrect </option>
                 <option value="true"> correct </option>
             </select>
-        </p>
-        <p>
-            <label for="answer4">answer</label>
+        </div> </div>
+        <div class="row">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="answer4">answer</label>
             <input type="text" name="answer4">
-            <label for="correct4">correct</label>
+
             <select name="correct4">
                 <option value="false"> incorrect </option>
                 <option value="true"> correct </option>
             </select>
-        </p>
+        </div>
+      </div>
         <p>
             <input type="submit">
         </p>
@@ -62,15 +66,17 @@
     {% if not question=={} %}
 
       <form action="" method="post">
-        <p>
-            <label for="question">question</label>
+        <div class="row">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="question">question</label>
             <input type="text" name="question" value="{{ question.question }}" required>
-        </p>
+        </div> </div>
         {% for answer in question.answers %}
-        <p>
-            <label for="answer{{ answer.answerid }}">answer</label>
+        <div class="row">
+  <div class="col-lg-5 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="answer{{ answer.answerid }}">answer</label>
             <input type="text" name="answer{{ answer.answerid }}" value="{{ answer.answer }}">
-            <label for="correct{{ answer.answerid }}">correct</label>
+
             <select name="correct{{ answer.answerid }}">
                 <option value="false"> incorrect </option>
                 {% if answer.correct %}
@@ -79,7 +85,7 @@
                   <option value="true"> correct </option>
                 {% endif %}
             </select>
-        </p>
+        </div> </div>
         {% endfor %}
 
         <p>
@@ -98,9 +104,10 @@
       <h3> Answers: </h3>
       {% for answer in question.answers %}
         <p>
+        {{answer.answer}}
         <a href="{{ url_for('admin_answer', exam_id=exam_id, section_id=section_id, question_id=question_id, answer_id=answer.answerid) }}"
-        <button type="button">
-        {{ 'edit ' + answer.answer}}
+        <button type="button" class="btn btn-primary btn-default">
+        {{ 'edit'}}
         </button>
         </a>
         </p>
@@ -108,7 +115,7 @@
 
       <p>
         <a href="{{ url_for('admin_answer', exam_id=exam_id, section_id=section_id, question_id=question_id, answer_id='new') }}"
-        <button type="button">
+        <button type="button" class="btn btn-primary btn-default">
         {{ 'create new answer' }}
         </button>
         </a>

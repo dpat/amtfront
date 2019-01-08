@@ -1,23 +1,16 @@
 <html>
-<head>
-  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
-</head>
-<body>
+{% include 'base.html' %}
 
-  <ul>
-    <li><a href="{{ url_for('home') }}">Home</a></li>
-    <li><a href="{{ url_for('admin') }}">Admin</a></li>
-    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
+<body>
+  {% include 'navbartest.html' %}
+
 
     <form action="" method="post">
-        <p>
-            <label for="answer">answer</label>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="answer">answer</label>
             <input type="text" name="answer" Value="{{ answer.answer }}">
-        </p>
-        <p>
-            <label for="correct">correct</label>
+
             <select name="correct">
                 <option value="false"> incorrect </option>
                 {% if answer.correct %}
@@ -26,7 +19,7 @@
                   <option value="true"> correct </option>
                 {% endif %}
             </select>
-        </p>
+        </div> </div>
         <p>
             <input type="submit">
         </p>

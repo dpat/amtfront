@@ -1,0 +1,39 @@
+<html>
+{% include 'base.html' %}
+
+<body>
+
+<h1> ATTENTION </h1>
+<h3> Amtgard and Kingdom Names are required to proceed: please input below </h3>
+<form action="" method="post">
+  <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 col-centered">
+        <label style="width: 120px;" for="amt_name">Amtgard Name</label>
+        <input type="text" name="amt_name" value="">
+      </div>
+      </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 col-centered">
+        <label style="width: 120px;" for="kingdom">Kingdom</label>
+        <select name="kingdom">
+          {% for kingdom in kingdoms %}
+            {% if user.kingdom == kingdom %}
+              <option value="{{kingdom}}" selected="selected"> {{kingdom}} </option>
+            {% else %}
+              <option value="{{kingdom}}"> {{kingdom}} </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-centered">
+    <p>
+      <input type="submit">
+    </p>
+  </div>
+  </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

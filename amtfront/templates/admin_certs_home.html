@@ -1,0 +1,32 @@
+<html>
+{% include 'base.html' %}
+
+<body>
+  {% include 'navbartest.html' %}
+{% if admin %}
+  <p>
+    All Exams
+    <br><a href="{{ url_for('admin_certs', method='all') }}">
+    <button type="button" class="btn btn-primary btn-default">
+    view
+    </button>
+    </a>
+  </p>
+{% endif %}
+
+{% for exam in exams %}
+
+  <p>
+    Name: {{ exam.name }}
+    <br><a href="{{ url_for('admin_certs', method=exam.examid) }}">
+    <button type="button" class="btn btn-primary btn-default">
+    view
+    </button>
+    </a>
+  </p>
+{% endfor %}
+
+
+{% include 'footer.html' %}
+</body>
+</html>

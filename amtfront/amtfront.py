@@ -5,6 +5,57 @@ import requests, json, flask, sys, os
 app = Flask(__name__)
 app.secret_key = 'testing this out'
 
+
+def is_admin():
+    if session['admin']:
+        return True
+    else:
+        return False
+
+
+
+@app.route('/set_names', methods=['post','get'])
+def set_names():
+    baseurl = str(app.config.get('baseurl'))
+    kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+    "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+    "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+    "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+    "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+    "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+    "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+    "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+    "The Golden City", "The Principality of Viridian Outlands"]
+    if 'userid' not in session:
+        return redirect(url_for('login'))
+    userid = str(session['userid'])
+
+    if request.method == 'POST':
+        amt_name = request.form.get('amt_name')
+        kingdom = request.form.get('kingdom')
+
+        url = (baseurl + '/user/' + userid)
+        headers = {'content-type': 'application/json', 'token': app.config.get('token')}
+        payload = {'amt_name': amt_name, 'kingdom': kingdom}
+        response = requests.put(url, data=json.dumps(payload), headers=headers)
+
+        if not amt_name or not kingdom:
+            session['has_required_names'] = False
+            return redirect(url_for('set_names'))
+        else:
+            session['has_required_names'] = True
+            return redirect(url_for('home'))
+
+    else:
+
+        url = (baseurl + '/user/' + userid)
+        headers = {'content-type': 'application/json', 'token': app.config.get('token')}
+        response = requests.get(url, headers=headers)
+        user = json.loads(response.text)
+
+        return render_template('set_kingdom_and_amtname.html', user=user, kingdoms=kingdoms)
+
+
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -13,15 +64,12 @@ def login():
 def home():
 
     baseurl = str(app.config.get('baseurl'))
-
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
-
-    admin = False
-    if session['admin']:
-        admin = True
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
+    userid = str(session['userid'])
+    admin = is_admin()
 
     url = (baseurl + '/user/' + userid)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -44,6 +92,7 @@ def home():
                 certdict[cert['examid']] = cert
         elif cert['examid'] not in certdict and cert['passed']:
             certdict[cert['examid']] = cert
+
 
     return render_template('home.html', admin=admin, user=user, exams=exams, certs=certdict)
 
@@ -68,10 +117,11 @@ def exam(exam_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    userid = str(session['userid'])
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     url = (baseurl + '/certificate/' + userid + '/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -96,7 +146,7 @@ def exam(exam_id):
         if 'exam' in session:
             session.pop('exam', None)
 
-        if cert['incorrect']:
+        if cert.get('incorrect', None):
             incorrect = cert.pop('incorrect')
         else:
             incorrect = []
@@ -127,10 +177,10 @@ def minimize_exam_dict(exam):
 def ula(exam_id):
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     url = (baseurl + '/exam/' + exam_id)
     headers = {'content-type': 'application/json', 'token':app.config.get('token')}
@@ -152,11 +202,19 @@ def logout():
 @app.route('/settings', methods=['post','get'])
 def settings():
     baseurl = str(app.config.get('baseurl'))
-
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+                "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+                "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+                "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+                "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+                "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+                "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+                "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+                "The Golden City", "The Principality of Viridian Outlands"]
+    if 'userid' not in session:return redirect(url_for('login'))
+    userid = str(session['userid'])
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if request.method == 'POST':
         amt_name = request.form.get('amt_name')
@@ -166,7 +224,13 @@ def settings():
         headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         payload = {'amt_name':amt_name, 'kingdom':kingdom}
         response = requests.put(url, data=json.dumps(payload), headers=headers)
-        return redirect(url_for('settings'))
+
+        if not amt_name or not kingdom:
+            session['has_required_names'] = False
+            return redirect(url_for('set_names'))
+        else:
+            session['has_required_names'] = True
+            return redirect(url_for('settings'))
 
     else:
         url = (baseurl + '/user/' + userid)
@@ -174,17 +238,17 @@ def settings():
         response = requests.get(url, headers=headers)
         user = json.loads(response.text)
 
-        return render_template('settings.html', user=user)
+        return render_template('settings.html', kingdoms=kingdoms, user=user)
 
 @app.route('/admin')
 def admin():
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -201,10 +265,9 @@ def admin_user_view():
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
-        return redirect(url_for('login'))
+    if 'userid' not in session:    return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -220,11 +283,19 @@ def admin_user_view():
 def admin_user(user_id):
 
     baseurl = str(app.config.get('baseurl'))
-
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    kingdoms = ["Kingdom of the Desert Winds", "The Celestial Kingdom", "The Empire of Rivermoor",
+                "The Empire of the Iron Mountains", "The Freeholds of Amtgard", "The Kingdom of Black Spire",
+                "The Kingdom of Burning Lands", "The Kingdom of Crystal Groves", "The Kingdom of Dragonspine",
+                "The Kingdom of Goldenvale", "The Kingdom of Neverwinter", "The Kingdom of Northern Lights",
+                "The Kingdom of Northreach", "The Kingdom of Polaris", "The Kingdom of Tal Dagore",
+                "The Kingdom of the Emerald Hills", "The Kingdom of the Golden Plains", "The Kingdom of the Rising Winds",
+                "The Kingdom of the Wetlands", "The Kingdom of Westmarch", "The Kingdom of Winters Edge",
+                "Principality of the Nine Blades", "Souls Crossing", "The Confederacy of Dreadmoor",
+                "The Golden City", "The Principality of Viridian Outlands"]
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -256,7 +327,8 @@ def admin_user(user_id):
         return redirect(url_for('admin_user_view'))
 
     else:
-        return render_template('admin_user.html', user=user)
+
+        return render_template('admin_user.html', user=user, kingdoms=kingdoms)
 
 
 @app.route('/admin/certs/<method>', methods=['get'])
@@ -264,17 +336,40 @@ def admin_certs(method):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
+    headers = {'content-type': 'application/json', 'token':app.config.get('token')}
+    url = (baseurl + '/exam')
+    response = requests.get(url, headers=headers)
+    exams = json.loads(response.text)
+    exam_ids = []
+    for exam in exams:
+        exam_ids.append(str(exam.get('examid')))
+    if method == "home":
+        return render_template('admin_certs_home.html', exams=exams, admin=is_admin())
     if method == "all":
         url = (baseurl + '/certificate')
-        headers = {'content-type': 'application/json', 'token':app.config.get('token')}
         response = requests.get(url, headers=headers)
         certs = json.loads(response.text)
         return render_template('admin_certs.html', certs=certs)
+
+    if str(method) in exam_ids:
+        url = (baseurl + '/certificate')
+        response = requests.get(url, headers=headers)
+        certs = json.loads(response.text)
+        users = {}
+        for cert in certs[::-1]:
+            if str(cert.get('examid')) == str(method):
+                if cert.get('username') not in users:
+                    users[cert.get('username')] = cert
+                elif not (users.get(cert.get('username'))).get('passed') and cert.get('passed'):
+                    users[cert.get('username')] = cert
+
+        return render_template('admin_certs.html', certs=users.values())
+
 
 
 @app.route('/admin/exam/<exam_id>', methods=['post','get'])
@@ -282,10 +377,10 @@ def admin_exam(exam_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -344,10 +439,10 @@ def admin_section(exam_id, section_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -396,10 +491,10 @@ def admin_question(exam_id, section_id, question_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -473,10 +568,10 @@ def admin_answer(exam_id, section_id, question_id, answer_id):
 
     baseurl = str(app.config.get('baseurl'))
 
-    if 'userid' in session:
-        userid = str(session['userid'])
-    else:
+    if 'userid' not in session:
         return redirect(url_for('login'))
+    if not session['has_required_names']:
+        return redirect(url_for('set_names'))
 
     if not session["admin"]:
         return redirect(url_for('home'))
@@ -541,9 +636,17 @@ def handle_data():
         r = requests.post(url, data=json.dumps(payload), headers=headers)
         response = json.loads(r.text)
 
-
         session['userid'] = response["userid"]
         session['admin'] = response["admin"]
+        amt_name = response.get('amt_name')
+        kingdom = response.get('kingdom')
+        session['has_required_names'] = True
+        if not amt_name or not kingdom:
+            session['has_required_names'] = False
+        user_id = response["userid"]
+        url = (baseurl + '/user/' + user_id)
+        headers = {'content-type': 'application/json', 'token': app.config.get('token')}
+        response = requests.get(url, headers=headers)
         return json.dumps(response)
 
 

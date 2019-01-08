@@ -1,35 +1,41 @@
 <html>
-<head>
-  <link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/style.css') }}' />
-</head>
-<body>
+{% include 'base.html' %}
 
-  <ul>
-    <li><a href="{{ url_for('home') }}">Home</a></li>
-    <li><a href="{{ url_for('admin') }}">Admin</a></li>
-    <li><a href="{{ url_for('settings') }}">User Settings</a></li>
-    <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
+<body>
+  {% include 'navbartest.html' %}
 
     <form action="" method="post">
-        <p>
-            <label for="name">name</label>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="name">name</label>
             <input type="text" name="name" value="{{ user.name }}" required>
-        </p>
-        <p>
-            <label for="email">email</label>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="email">email</label>
             <input type="text" name="email" value="{{ user.email }}" required>
-        </p>
-        <p>
-            <label for="amt_name">amt_name</label>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="amt_name">amt_name</label>
             <input type="text" name="amt_name" value="{{ user.amt_name }}">
-        </p>
-        <p>
-            <label for="kingdom">kingdom</label>
-            <input type="text" name="kingdom" value="{{ user.kingdom }}">
-        </p>
-        <p>
-            <label for="admin">admin</label>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="kingdom">kingdom</label>
+            <select name="kingdom">
+              {% for kingdom in kingdoms %}
+                {% if user.kingdom == kingdom %}
+                  <option value="{{kingdom}}" selected="selected"> {{kingdom}} </option>
+                {% else %}
+                  <option value="{{kingdom}}"> {{kingdom}} </option>
+                {% endif %}
+              {% endfor %}
+            </select>
+        </div> </div>
+        <div class="row">
+<div class="col-lg-4 col-md-8 col-sm-12 col-xs-12 col-centered">
+            <label style="width: 120px;" for="admin">admin</label>
             <select name="admin">
                 <option value="false"> no </option>
                   {% if user.admin %}
@@ -39,7 +45,7 @@
                   {% endif %}
 
             </select>
-        </p>
+        </div> </div>
 
         <p>
             <input type="submit">
